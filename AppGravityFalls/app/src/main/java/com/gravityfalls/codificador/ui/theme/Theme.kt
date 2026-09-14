@@ -1,0 +1,80 @@
+package com.gravityfalls.codificador.ui.theme
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+
+// ── Cores compartilhadas (identidade Bill / Gravity Falls) ──
+val BlackVoid = Color(0xFF000000)
+val CrtBlack = Color(0xFF050705)
+val PanelDark = Color(0xFF0A0F0A)
+val TerminalGreen = Color(0xFF33FF66)
+val TerminalDim = Color(0xFF1A8C3A)
+val PhosphorGlow = Color(0xFF00FF41)
+val BloodRed = Color(0xFFFF1A1A)
+val ButtonRed = Color(0xFFB30000)
+val BillGold = Color(0xFFFFD90A)
+val Parchment = Color(0xFFE8DCC0)
+val Scanline = Color(0xFF101410)
+
+// ── Modo escuro: terminal CRT do thisisnotawebsitedotcom.com ──
+private val DarkCrtScheme = darkColorScheme(
+    primary = TerminalGreen,
+    onPrimary = Color.Black,
+    secondary = BillGold,
+    onSecondary = Color.Black,
+    secondaryContainer = Color(0xFF1A1A08),
+    onSecondaryContainer = BillGold,
+    background = BlackVoid,
+    onBackground = TerminalGreen,
+    surface = PanelDark,
+    onSurface = TerminalGreen,
+    surfaceVariant = Color(0xFF0D1A0D),
+    onSurfaceVariant = Parchment,
+    outline = TerminalDim,
+    error = BloodRed,
+    onError = Color.White
+)
+
+// ── Modo claro: Diário do Dipper / pergaminho ──
+// Fundo papel, texto marrom-escuro, destaques em vermelho-journal e dourado-queimado.
+private val LightJournalScheme = lightColorScheme(
+    primary = Color(0xFF6D1A1A),
+    onPrimary = Color.White,
+    secondary = Color(0xFF7A6200),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFF3E5B8),
+    onSecondaryContainer = Color(0xFF3E2F00),
+    background = Color(0xFFF3EAD3),
+    onBackground = Color(0xFF3E2723),
+    surface = Color(0xFFFFFBEB),
+    onSurface = Color(0xFF3E2723),
+    surfaceVariant = Color(0xFFEFE0B8),
+    onSurfaceVariant = Color(0xFF5D4037),
+    outline = Color(0xFF8D6E63),
+    error = Color(0xFFB00020),
+    onError = Color.White
+)
+
+val CrtMono = FontFamily.Monospace
+
+/**
+ * Segue AUTOMATICAMENTE o tema do celular:
+ * - celular em modo escuro -> terminal CRT preto/verde
+ * - celular em modo claro  -> diário pergaminho
+ * Sem nenhuma opção manual, conforme pedido.
+ */
+@Composable
+fun GravityFallsTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colorScheme = if (darkTheme) DarkCrtScheme else LightJournalScheme,
+        content = content
+    )
+}
