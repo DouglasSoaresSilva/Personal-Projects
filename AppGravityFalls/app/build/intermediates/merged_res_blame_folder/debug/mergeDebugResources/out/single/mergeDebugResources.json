@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_stanford_regular.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/stanford_regular.ttf"
+    },
+    {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_amatic_sc_bold.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/amatic_sc_bold.ttf"
+    },
+    {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_amatic_sc_regular.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/amatic_sc_regular.ttf"
+    }
+]

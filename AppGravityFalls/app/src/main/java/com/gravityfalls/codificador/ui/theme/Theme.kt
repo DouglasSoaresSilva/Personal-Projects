@@ -1,12 +1,13 @@
 package com.gravityfalls.codificador.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
 
 // ── Cores compartilhadas (identidade Bill / Gravity Falls) ──
 val BlackVoid = Color(0xFF000000)
@@ -60,8 +61,7 @@ private val LightJournalScheme = lightColorScheme(
     onError = Color.White
 )
 
-val CrtMono = FontFamily.Monospace
-val JournalSerif = FontFamily.Serif
+// CrtMono / Stanford / Amatic / JournalSerif moram em Fonts.kt (evita duplicação).
 
 // ── Cores extras para o redesign imersivo ──
 val ParchmentDeep = Color(0xFFD9C69A)
@@ -69,6 +69,20 @@ val LeatherBrown = Color(0xFF4E342E)
 val BrushRed = Color(0xFFA31A1A)
 val CardDarkElev = Color(0xFF0E150E)
 val GoldDim = Color(0xFF8C7300)
+val InkBrown = Color(0xFF3E2723)
+val PencilGray = Color(0xFF8D6E63)
+val TapeBeige = Color(0xFFE8DCC0)
+val StampRed = Color(0xFFA31A1A)
+
+// ── Formas: cantos ligeiramente irregulares (papel) / terminal (bill) ──
+/** Ficha de investigação presa na página — cada canto com raio diferente. */
+val JournalCardShape = RoundedCornerShape(3.dp, 14.dp, 4.dp, 12.dp)
+/** Campo de diário — quase reto, com leve tremor. */
+val JournalFieldShape = RoundedCornerShape(4.dp, 10.dp, 3.dp, 11.dp)
+/** Terminal ocultista — reto e severo. */
+val BillCardShape = RoundedCornerShape(4.dp)
+/** Etiqueta / carimbo. */
+val StampShape = RoundedCornerShape(2.dp)
 
 /**
  * Tema com 3 estados:

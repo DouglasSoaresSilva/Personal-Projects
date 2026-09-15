@@ -1,4 +1,7 @@
 R_DEF: Internal format may change without notice
 local
+font amatic_sc_bold
+font amatic_sc_regular
+font stanford_regular
 string app_name
 style Theme.GravityFalls

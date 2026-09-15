@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,12 +40,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -65,6 +63,13 @@ import com.gravityfalls.codificador.ciphers.cipherExampleInput
 import com.gravityfalls.codificador.ciphers.runCipher
 import com.gravityfalls.codificador.history.HistoryEntry
 import com.gravityfalls.codificador.history.HistoryStore
+import com.gravityfalls.codificador.ui.decor.BillTriangle
+import com.gravityfalls.codificador.ui.decor.FootnoteScribble
+import com.gravityfalls.codificador.ui.decor.HandCircle
+import com.gravityfalls.codificador.ui.decor.MarginDoodles
+import com.gravityfalls.codificador.ui.decor.MiniBillIcon
+import com.gravityfalls.codificador.ui.decor.StampText
+import com.gravityfalls.codificador.ui.decor.TapePiece
 import com.gravityfalls.codificador.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -135,102 +140,16 @@ fun CipherScreen(
         scope.launch { snackbar.showSnackbar("Copiado! O Bill viu isso… 👁") }
     }
 
+    // Glitch sutil do modo Bill — deslocamento de 1px por fração de segundo
+    val glitchClock = rememberInfiniteTransition(label = "glitch")
+    val glitch by glitchClock.animateFloat(
+        initialValue = 0f, targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(7000), RepeatMode.Restart),
+        label = "glitchPos"
+    )
+    val glitchOffset = if (isDark && (glitch > 0.96f)) 1f else 0f
+
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        MiniBillIcon(isDark = isDark)
-                        Spacer(Modifier.width(8.dp))
-                        Column {
-                            Text(
-                                if (isDark) "MODO ESCURO — LIVRO DO BILL" else "MODO CLARO — DIÁRIO 3",
-                                fontFamily = if (isDark) CrtMono else JournalSerif,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp,
-                                letterSpacing = 1.sp,
-                                color = if (isDark) TerminalGreen else LeatherBrown,
-                                maxLines = 1, overflow = TextOverflow.Ellipsis
-                            )
-                            Text(
-                                when (themeMode) {
-                                    ThemeMode.SYSTEM -> "Tema: sistema (auto)"
-                                    ThemeMode.LIGHT -> "Tema: claro (fixo)"
-                                    ThemeMode.DARK -> "Tema: escuro (fixo)"
-                                },
-                                fontFamily = CrtMono, fontSize = 10.sp,
-                                color = scheme.onBackground.copy(alpha = 0.6f)
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "Menu / configurações")
-                    }
-                    DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                        Text(
-                            "TEMA", fontFamily = CrtMono, fontSize = 10.sp, fontWeight = FontWeight.Bold,
-                            color = scheme.primary, modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
-                        )
-                        ThemeMode.values().forEach { mode ->
-                            DropdownMenuItem(
-                                text = {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            when (mode) {
-                                                ThemeMode.SYSTEM -> Icons.Filled.AutoMode
-                                                ThemeMode.LIGHT -> Icons.Filled.LightMode
-                                                ThemeMode.DARK -> Icons.Filled.DarkMode
-                                            },
-                                            contentDescription = null, modifier = Modifier.size(18.dp)
-                                        )
-                                        Spacer(Modifier.width(8.dp))
-                                        Text(
-                                            when (mode) {
-                                                ThemeMode.SYSTEM -> "Sistema (auto)"
-                                                ThemeMode.LIGHT -> "Claro"
-                                                ThemeMode.DARK -> "Escuro"
-                                            },
-                                            fontFamily = CrtMono, fontSize = 13.sp
-                                        )
-                                        if (mode == themeMode) {
-                                            Spacer(Modifier.width(8.dp))
-                                            Icon(Icons.Filled.Check, contentDescription = "Ativo", modifier = Modifier.size(16.dp))
-                                        }
-                                    }
-                                },
-                                onClick = { onThemeModeChange(mode); showMenu = false }
-                            )
-                        }
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = { Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Filled.Info, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
-                                Text("Sobre o app", fontFamily = CrtMono, fontSize = 13.sp)
-                            } },
-                            onClick = { showMenu = false; showAbout = true }
-                        )
-                        DropdownMenuItem(
-                            text = { Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Filled.HelpOutline, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
-                                Text("Ajuda", fontFamily = CrtMono, fontSize = 13.sp)
-                            } },
-                            onClick = { showMenu = false; showHelp = true }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("Sair", fontFamily = CrtMono, fontSize = 13.sp) },
-                            onClick = { showMenu = false; activity?.finish() }
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = if (isDark) Color(0xFF050705) else Color(0xFFE4D3A8),
-                    titleContentColor = scheme.onBackground,
-                    actionIconContentColor = scheme.onBackground
-                )
-            )
-        },
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = scheme.background
     ) { padding ->
@@ -250,16 +169,30 @@ fun CipherScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BillHeader(isDark = isDark)
+                // ── Barra fina de página: nº de entrada + tema + menu ──
+                JournalToolbar(
+                    isDark = isDark,
+                    themeMode = themeMode,
+                    showMenu = showMenu,
+                    onMenuChange = { showMenu = it },
+                    onThemeModeChange = onThemeModeChange,
+                    onAbout = { showAbout = true },
+                    onHelp = { showHelp = true },
+                    onExit = { activity?.finish() }
+                )
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(6.dp))
 
-                // Slogan pill
+                BillHeader(isDark = isDark, glitchOffset = glitchOffset)
+
+                Spacer(Modifier.height(8.dp))
+
+                // Slogan — etiqueta costurada na página
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(50))
+                        .clip(if (isDark) BillCardShape else StampShape)
                         .background(if (isDark) Color(0xFF0A0F0A) else Color(0xFFFFFBEB))
-                        .border(1.dp, scheme.error, RoundedCornerShape(50))
+                        .border(1.dp, scheme.error, if (isDark) BillCardShape else StampShape)
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
@@ -271,29 +204,48 @@ fun CipherScreen(
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    if (isDark) "McGUCKET LABS // TERMINAL DE CIFRAS" else "DIÁRIO Nº 3 // PÁGINA DE CIFRAS",
+                    if (isDark) "RECORD OF UNKNOWN CODES" else "DIÁRIO Nº 3 // PÁGINA DE CIFRAS",
                     color = scheme.onBackground.copy(alpha = 0.6f),
-                    fontFamily = CrtMono, fontSize = 11.sp, textAlign = TextAlign.Center
+                    fontFamily = HandSmall, fontSize = 15.sp, textAlign = TextAlign.Center
                 )
+                if (isDark) {
+                    Text(
+                        "DO NOT TRUST THE TRIANGLE",
+                        color = BloodRed.copy(alpha = 0.7f),
+                        fontFamily = HandSmall, fontSize = 13.sp, textAlign = TextAlign.Center
+                    )
+                }
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(10.dp))
 
-                // ── Seletor de tema 3-estados (botão pedido: desativa o seguir-sistema) ──
-                ThemeSelectorBar(themeMode = themeMode, onChange = onThemeModeChange, isDark = isDark)
+                ThemeSelectorStamps(themeMode = themeMode, onChange = onThemeModeChange, isDark = isDark)
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(10.dp))
 
                 ModeSwitch(encodeMode, isDark = isDark) { encodeMode = it }
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(10.dp))
 
-                // ── Seleção de cifra em 3 cards horizontais (mockup) ──
-                Text(
-                    "ESCOLHA A CIFRA", fontFamily = CrtMono, fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold, letterSpacing = 1.sp,
-                    color = scheme.onBackground.copy(alpha = 0.7f),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                // ── Seleção de cifra em 3 fichas (layout mantido) ──
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "ESCOLHA A CIFRA",
+                        fontFamily = if (isDark) Amatic else Stanford,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = if (isDark) 17.sp else 15.sp,
+                        letterSpacing = 1.sp,
+                        color = scheme.onBackground.copy(alpha = 0.8f),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        "CLASSIFICAÇÃO: CONFIDENCIAL",
+                        fontFamily = HandSmall, fontSize = 12.sp,
+                        color = scheme.error.copy(alpha = 0.7f)
+                    )
+                }
                 Spacer(Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -311,7 +263,7 @@ fun CipherScreen(
                     }
                 }
 
-                // ── Campo extra: deslocamento do César (+N / −N) ──
+                // ── Deslocamento do César ──
                 if (cipher == CipherType.CAESAR) {
                     Spacer(Modifier.height(8.dp))
                     CaesarShiftStepper(
@@ -325,9 +277,9 @@ fun CipherScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(if (isDark) BillCardShape else JournalCardShape)
                         .background(scheme.surfaceVariant)
-                        .border(1.dp, scheme.outline, RoundedCornerShape(10.dp))
+                        .border(1.dp, scheme.outline, if (isDark) BillCardShape else JournalCardShape)
                         .padding(10.dp)
                 ) {
                     Text(
@@ -337,14 +289,14 @@ fun CipherScreen(
                     )
                 }
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(12.dp))
 
-                // ── Entrada ──
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    SectionLabel(if (encodeMode) "> TEXTO DE ENTRADA_" else "> TEXTO CIFRADO_", isDark)
+                // ── Entrada (layout mantido: ENTRADA → SAÍDA → botão → 4 ações) ──
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
+                    SectionLabel(if (encodeMode) "ENTRADA" else "ENTRADA CIFRADA", isDark)
                     Text(
-                        "${input.length}/$MAX_INPUT", fontFamily = CrtMono, fontSize = 10.sp,
-                        color = scheme.onBackground.copy(alpha = 0.55f)
+                        "${input.length}/$MAX_INPUT", fontFamily = HandSmall, fontSize = 14.sp,
+                        color = scheme.onBackground.copy(alpha = 0.6f)
                     )
                 }
                 OutlinedTextField(
@@ -352,30 +304,148 @@ fun CipherScreen(
                     onValueChange = { input = it.take(MAX_INPUT) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 110.dp)
-                        .shadow(if (isDark) 6.dp else 2.dp, RoundedCornerShape(10.dp)),
+                        .heightIn(min = 96.dp)
+                        .shadow(if (isDark) 6.dp else 2.dp, if (isDark) BillCardShape else JournalFieldShape),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = scheme.onSurface,
                         unfocusedTextColor = scheme.onSurface,
-                        cursorColor = scheme.secondary,
+                        cursorColor = if (isDark) BillGold else BrushRed,
                         focusedContainerColor = scheme.surface,
                         unfocusedContainerColor = scheme.surface,
                         focusedBorderColor = scheme.primary,
                         unfocusedBorderColor = scheme.outline
                     ),
-                    shape = RoundedCornerShape(10.dp),
-                    textStyle = LocalTextStyle.current.copy(fontFamily = CrtMono, fontSize = 15.sp),
+                    shape = if (isDark) BillCardShape else JournalFieldShape,
+                    textStyle = LocalTextStyle.current.copy(
+                        fontFamily = if (isDark) CrtMono else Stanford,
+                        fontSize = if (isDark) 15.sp else 19.sp,
+                        lineHeight = if (isDark) 22.sp else 24.sp
+                    ),
                     placeholder = {
                         Text(
                             if (cipher == CipherType.A1Z26 && !encodeMode) "Ex: 23 5 12 3 15 13 5 / 20 15 …"
-                            else "Digite algo… ele está observando 👁",
+                            else "Digite o texto aqui...",
                             color = scheme.onSurface.copy(alpha = 0.45f),
-                            fontFamily = CrtMono, fontSize = 13.sp
+                            fontFamily = if (isDark) CrtMono else HandSmall,
+                            fontSize = if (isDark) 13.sp else 17.sp
                         )
                     }
                 )
 
                 Spacer(Modifier.height(8.dp))
+
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
+                    SectionLabel("SAÍDA", isDark)
+                    Text(
+                        if (output.isBlank()) "0/500" else "${output.length} chars",
+                        fontFamily = HandSmall, fontSize = 14.sp,
+                        color = scheme.onBackground.copy(alpha = 0.55f)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 96.dp)
+                        .clip(if (isDark) BillCardShape else JournalFieldShape)
+                        .background(scheme.secondaryContainer)
+                        .border(1.dp, scheme.secondary, if (isDark) BillCardShape else JournalFieldShape)
+                        .padding(12.dp)
+                ) {
+                    // linhas pautadas sutis no modo diário
+                    if (!isDark) {
+                        Canvas(modifier = Modifier.matchParentSize()) {
+                            val step = 26.dp.toPx()
+                            var y = step
+                            while (y < size.height) {
+                                drawLine(
+                                    Color(0xFF8D6E63).copy(alpha = 0.18f),
+                                    Offset(0f, y), Offset(size.width, y), 1f
+                                )
+                                y += step
+                            }
+                        }
+                    }
+                    Text(
+                        output.ifBlank { "Resultado aparecerá aqui..." },
+                        color = if (output.isBlank()) scheme.onSecondaryContainer.copy(alpha = 0.5f)
+                        else scheme.onSecondaryContainer,
+                        fontFamily = if (isDark) CrtMono else Stanford,
+                        fontSize = if (isDark) 15.sp else 19.sp,
+                        lineHeight = if (isDark) 22.sp else 24.sp
+                    )
+                }
+                if (isDark) {
+                    Text(
+                        "DECODIFICAÇÃO ENCONTRADA",
+                        color = TerminalGreen.copy(alpha = 0.6f),
+                        fontFamily = HandSmall, fontSize = 13.sp,
+                        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                        textAlign = TextAlign.End
+                    )
+                } else {
+                    Text(
+                        "— resultado —",
+                        color = scheme.onBackground.copy(alpha = 0.45f),
+                        fontFamily = HandSmall, fontSize = 14.sp,
+                        modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
+                        textAlign = TextAlign.End
+                    )
+                }
+
+                Spacer(Modifier.height(10.dp))
+
+                // ── Botão principal — pincelada / terminal ──
+                if (isDark) {
+                    Button(
+                        onClick = {
+                            val result = runCipher(cipher, encodeMode, input, caesarShift)
+                            output = result
+                            addToHistory(result)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp)
+                            .shadow(8.dp, BillCardShape)
+                            .border(1.dp, BloodRed, BillCardShape),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1A0505),
+                            contentColor = BloodRed
+                        ),
+                        shape = BillCardShape
+                    ) {
+                        Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            if (encodeMode) "CODIFICAR  ▼" else "DESCODIFICAR  ▼",
+                            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 20.sp,
+                            letterSpacing = 1.sp
+                        )
+                    }
+                } else {
+                    // pincelada: bloco vermelho com cantos vivos + leve rotação
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .rotate(-0.4f)
+                            .clip(StampShape)
+                            .background(BrushRed)
+                            .clickable {
+                                val result = runCipher(cipher, encodeMode, input, caesarShift)
+                                output = result
+                                addToHistory(result)
+                            }
+                            .padding(vertical = 14.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            if (encodeMode) "CODIFICAR  ▼" else "DESCODIFICAR  ▼",
+                            fontFamily = Stanford, fontSize = 19.sp,
+                            color = Color.White, letterSpacing = 1.sp
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(10.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     QuickButton("EXEMPLO", Icons.Filled.Book, Modifier.weight(1f), isDark) {
                         input = cipherExampleInput(cipher, encodeMode, caesarShift)
@@ -390,64 +460,7 @@ fun CipherScreen(
                     }
                 }
 
-                Spacer(Modifier.height(10.dp))
-
-                // ── Botão principal ──
-                Button(
-                    onClick = {
-                        val result = runCipher(cipher, encodeMode, input, caesarShift)
-                        output = result
-                        addToHistory(result)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp)
-                        .shadow(8.dp, RoundedCornerShape(10.dp)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isDark) BloodRed else BrushRed,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Icon(Icons.Filled.PlayArrow, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        if (encodeMode) "CODIFICAR  ▼" else "DESCODIFICAR  ▼",
-                        fontFamily = CrtMono, fontWeight = FontWeight.Black, fontSize = 15.sp,
-                        letterSpacing = 1.sp
-                    )
-                }
-
                 Spacer(Modifier.height(14.dp))
-
-                // ── Resultado ──
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    SectionLabel("< RESULTADO_", isDark)
-                    if (output.isNotBlank()) {
-                        Text(
-                            "${output.length} chars", fontFamily = CrtMono, fontSize = 10.sp,
-                            color = scheme.onBackground.copy(alpha = 0.55f)
-                        )
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 110.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(scheme.secondaryContainer)
-                        .border(1.dp, scheme.secondary, RoundedCornerShape(10.dp))
-                        .padding(12.dp)
-                ) {
-                    Text(
-                        output.ifBlank { "A saída aparecerá aqui…" },
-                        color = if (output.isBlank()) scheme.onSecondaryContainer.copy(alpha = 0.5f)
-                        else scheme.onSecondaryContainer,
-                        fontFamily = CrtMono, fontSize = 15.sp, lineHeight = 22.sp
-                    )
-                }
-
-                Spacer(Modifier.height(16.dp))
 
                 // ── Histórico (resumo + ver tudo) ──
                 HistorySection(
@@ -465,30 +478,17 @@ fun CipherScreen(
                     onSeeAll = { showFullHistory = true }
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(12.dp))
 
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = scheme.error.copy(alpha = if (isDark) 0.12f else 0.1f)
-                    ),
-                    shape = RoundedCornerShape(10.dp),
-                    border = null
-                ) {
-                    Row(
-                        Modifier.fillMaxWidth().padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(Icons.Filled.Warning, null, tint = scheme.error, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(
-                            "NÃO CONFIE NO TRIÂNGULO\nRealidade é uma ilusão, o universo é um holograma.",
-                            color = scheme.error, fontFamily = CrtMono, fontSize = 10.sp,
-                            textAlign = TextAlign.Center, lineHeight = 15.sp, fontWeight = FontWeight.Bold
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Icon(Icons.Filled.Warning, null, tint = scheme.error, modifier = Modifier.size(16.dp))
-                    }
+                MarginDoodles(
+                    color = if (isDark) TerminalGreen else LeatherBrown,
+                    alpha = if (isDark) 0.4f else 0.5f
+                )
+                Spacer(Modifier.height(4.dp))
+                if (isDark) {
+                    FootnoteScribble("THE CIPHER KNOWS — NÃO CONFIE NO TRIÂNGULO", BloodRed)
+                } else {
+                    FootnoteScribble("O que você não vê... te vê.", BrushRed)
                 }
                 Spacer(Modifier.height(28.dp))
             }
@@ -502,18 +502,36 @@ fun CipherScreen(
         AlertDialog(
             onDismissRequest = { showClearAllDialog = false },
             icon = { Text("△", fontSize = 28.sp, color = MaterialTheme.colorScheme.error) },
-            title = { Text("LIMPAR TUDO?", fontFamily = CrtMono, fontWeight = FontWeight.Black, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
-            text = { Text("Tem certeza que deseja apagar todo o histórico?", fontFamily = CrtMono, fontSize = 13.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+            title = {
+                Text(
+                    "LIMPAR TUDO?",
+                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = if (isDark) 22.sp else 18.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            text = {
+                Text(
+                    "Tem certeza que deseja apagar todo o histórico?",
+                    fontFamily = HandSmall, fontSize = 17.sp,
+                    textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()
+                )
+            },
             confirmButton = {
                 Button(
                     onClick = { persist(emptyList()); showClearAllDialog = false },
                     colors = ButtonDefaults.buttonColors(containerColor = scheme.error, contentColor = Color.White),
-                    shape = RoundedCornerShape(8.dp)
-                ) { Text("LIMPAR", fontFamily = CrtMono, fontWeight = FontWeight.Bold) }
+                    shape = if (isDark) BillCardShape else StampShape
+                ) { Text("LIMPAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 18.sp else 14.sp) }
             },
             dismissButton = {
-                OutlinedButton(onClick = { showClearAllDialog = false }, shape = RoundedCornerShape(8.dp)) {
-                    Text("CANCELAR", fontFamily = CrtMono)
+                OutlinedButton(
+                    onClick = { showClearAllDialog = false },
+                    shape = if (isDark) BillCardShape else StampShape
+                ) {
+                    Text("CANCELAR", fontFamily = if (isDark) Amatic else Stanford, fontSize = if (isDark) 18.sp else 14.sp)
                 }
             }
         )
@@ -522,15 +540,24 @@ fun CipherScreen(
     if (showFullHistory) {
         AlertDialog(
             onDismissRequest = { showFullHistory = false },
-            title = { Text("▤ HISTÓRICO // ${history.size}", fontFamily = CrtMono, fontWeight = FontWeight.Bold, fontSize = 16.sp) },
+            title = {
+                Text(
+                    "▤ HISTÓRICO // ${history.size}",
+                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = if (isDark) 22.sp else 17.sp
+                )
+            },
             text = {
                 if (history.isEmpty()) {
-                    Text("Nenhuma conversão ainda…", fontFamily = CrtMono, fontSize = 12.sp)
+                    Text("Nenhuma conversão ainda…", fontFamily = HandSmall, fontSize = 17.sp)
                 } else {
                     LazyColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                         items(history, key = { it.id }) { entry ->
                             HistoryCard(
                                 entry = entry,
+                                index = history.indexOf(entry),
+                                isDark = isDark,
                                 onRestore = {
                                     cipher = entry.cipher; encodeMode = entry.encode; input = entry.input
                                     if (entry.cipher == CipherType.CAESAR) caesarShift = entry.caesarShift
@@ -545,7 +572,7 @@ fun CipherScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showFullHistory = false }) {
-                    Text("FECHAR", fontFamily = CrtMono, fontWeight = FontWeight.Bold)
+                    Text("FECHAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 19.sp else 15.sp)
                 }
             }
         )
@@ -554,88 +581,227 @@ fun CipherScreen(
     if (showAbout) {
         AlertDialog(
             onDismissRequest = { showAbout = false },
-            title = { Text("Sobre o app", fontFamily = CrtMono, fontWeight = FontWeight.Bold) },
+            title = { Text("Sobre o app", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 24.sp else 19.sp) },
             text = {
                 Text(
-                    "Codificador Gravity Falls — as 3 cifras clássicas da série.\n\n• César: deslocamento configurável (padrão +3/−3)\n• Atbash: A↔Z simétrica\n• A1Z26: A=1…Z=26, / = espaço\n\nVisual: Livro do Bill (escuro) / Diário 3 (claro). Tema segue o sistema por padrão, mas pode ser fixado em claro/escuro.",
-                    fontFamily = CrtMono, fontSize = 12.sp, lineHeight = 17.sp
+                    "Codificador Gravity Falls — as 3 cifras clássicas da série.\n\n• César: deslocamento configurável (padrão +3/−3)\n• Atbash: A↔Z simétrica\n• A1Z26: A=1…Z=26, / = espaço\n\nVisual: Livro do Bill (escuro) / Diário 3 (claro).",
+                    fontFamily = HandSmall, fontSize = 17.sp, lineHeight = 22.sp
                 )
             },
-            confirmButton = { TextButton(onClick = { showAbout = false }) { Text("OK", fontFamily = CrtMono) } }
+            confirmButton = { TextButton(onClick = { showAbout = false }) { Text("OK", fontFamily = HandSmall, fontSize = 17.sp) } }
         )
     }
 
     if (showHelp) {
         AlertDialog(
             onDismissRequest = { showHelp = false },
-            title = { Text("Ajuda", fontFamily = CrtMono, fontWeight = FontWeight.Bold) },
+            title = { Text("Ajuda", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 24.sp else 19.sp) },
             text = {
                 Text(
                     "1. Escolha CODIFICAR ou DESCODIFICAR.\n2. Escolha a cifra (César, Atbash, A1Z26).\n3. No César, ajuste o deslocamento com − / + (1–25).\n4. Digite — a conversão é automática.\n5. Toque no botão principal para gravar no histórico.\n6. Toque num item do histórico para reutilizar.",
-                    fontFamily = CrtMono, fontSize = 12.sp, lineHeight = 18.sp
+                    fontFamily = HandSmall, fontSize = 17.sp, lineHeight = 22.sp
                 )
             },
-            confirmButton = { TextButton(onClick = { showHelp = false }) { Text("ENTENDI", fontFamily = CrtMono) } }
+            confirmButton = { TextButton(onClick = { showHelp = false }) { Text("ENTENDI", fontFamily = HandSmall, fontSize = 17.sp) } }
         )
     }
 }
 
-// ── Seletor de tema ─────────────────────────────────────────
+// ── Barra fina de página (substitui o TopAppBar Material) ──
+
+@Composable
+fun JournalToolbar(
+    isDark: Boolean,
+    themeMode: ThemeMode,
+    showMenu: Boolean,
+    onMenuChange: (Boolean) -> Unit,
+    onThemeModeChange: (ThemeMode) -> Unit,
+    onAbout: () -> Unit,
+    onHelp: () -> Unit,
+    onExit: () -> Unit
+) {
+    val scheme = MaterialTheme.colorScheme
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MiniBillIcon(isDark = isDark)
+        Spacer(Modifier.width(8.dp))
+        Column(Modifier.weight(1f)) {
+            Text(
+                "ENTRADA Nº 003",
+                fontFamily = HandSmall, fontSize = 15.sp,
+                color = scheme.onBackground.copy(alpha = 0.65f),
+                letterSpacing = 1.sp
+            )
+            Text(
+                if (isDark) "CIFRAS DESCONHECIDAS" else "CIFRAS DESCONHECIDAS",
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontWeight = FontWeight.Bold,
+                fontSize = if (isDark) 16.sp else 13.sp,
+                color = if (isDark) TerminalGreen else LeatherBrown,
+                maxLines = 1, overflow = TextOverflow.Ellipsis
+            )
+        }
+        // ciclo rápido de tema: SISTEMA → ESCURO → CLARO
+        IconButton(onClick = {
+            onThemeModeChange(
+                when (themeMode) {
+                    ThemeMode.SYSTEM -> ThemeMode.DARK
+                    ThemeMode.DARK -> ThemeMode.LIGHT
+                    ThemeMode.LIGHT -> ThemeMode.SYSTEM
+                }
+            )
+        }) {
+            Icon(
+                when (themeMode) {
+                    ThemeMode.SYSTEM -> Icons.Filled.AutoMode
+                    ThemeMode.LIGHT -> Icons.Filled.LightMode
+                    ThemeMode.DARK -> Icons.Filled.DarkMode
+                },
+                contentDescription = "Trocar tema",
+                tint = scheme.onBackground.copy(alpha = 0.75f),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Box {
+            IconButton(onClick = { onMenuChange(true) }) {
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = "Menu / configurações",
+                    tint = scheme.onBackground.copy(alpha = 0.75f)
+                )
+            }
+            DropdownMenu(expanded = showMenu, onDismissRequest = { onMenuChange(false) }) {
+                Text(
+                    "TEMA", fontFamily = HandSmall, fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                    color = scheme.primary, modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                )
+                ThemeMode.values().forEach { mode ->
+                    DropdownMenuItem(
+                        text = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    when (mode) {
+                                        ThemeMode.SYSTEM -> Icons.Filled.AutoMode
+                                        ThemeMode.LIGHT -> Icons.Filled.LightMode
+                                        ThemeMode.DARK -> Icons.Filled.DarkMode
+                                    },
+                                    contentDescription = null, modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    when (mode) {
+                                        ThemeMode.SYSTEM -> "Sistema (auto)"
+                                        ThemeMode.LIGHT -> "Claro"
+                                        ThemeMode.DARK -> "Escuro"
+                                    },
+                                    fontFamily = HandSmall, fontSize = 16.sp
+                                )
+                                if (mode == themeMode) {
+                                    Spacer(Modifier.width(8.dp))
+                                    Icon(Icons.Filled.Check, contentDescription = "Ativo", modifier = Modifier.size(16.dp))
+                                }
+                            }
+                        },
+                        onClick = { onThemeModeChange(mode); onMenuChange(false) }
+                    )
+                }
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Filled.Info, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
+                            Text("Sobre o app", fontFamily = HandSmall, fontSize = 16.sp)
+                        }
+                    },
+                    onClick = { onMenuChange(false); onAbout() }
+                )
+                DropdownMenuItem(
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Filled.HelpOutline, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
+                            Text("Ajuda", fontFamily = HandSmall, fontSize = 16.sp)
+                        }
+                    },
+                    onClick = { onMenuChange(false); onHelp() }
+                )
+                DropdownMenuItem(
+                    text = { Text("Sair", fontFamily = HandSmall, fontSize = 16.sp) },
+                    onClick = { onMenuChange(false); onExit() }
+                )
+            }
+        }
+    }
+}
+
+// ── Seletor de tema em carimbos ──
 
 @Composable
 fun ThemeSelectorBar(themeMode: ThemeMode, onChange: (ThemeMode) -> Unit, isDark: Boolean) {
+    ThemeSelectorStamps(themeMode, onChange, isDark)
+}
+
+@Composable
+fun ThemeSelectorStamps(themeMode: ThemeMode, onChange: (ThemeMode) -> Unit, isDark: Boolean) {
     val scheme = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(if (isDark) BillCardShape else JournalCardShape)
             .background(scheme.surface)
-            .border(1.dp, scheme.outline, RoundedCornerShape(12.dp))
+            .border(1.dp, scheme.outline, if (isDark) BillCardShape else JournalCardShape)
             .padding(10.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                Icons.Filled.AutoMode, null, tint = scheme.primary, modifier = Modifier.size(16.dp)
-            )
+            Icon(Icons.Filled.Refresh, null, tint = scheme.primary, modifier = Modifier.size(15.dp))
             Spacer(Modifier.width(6.dp))
             Text(
-                "TEMA DO APP", fontFamily = CrtMono, fontSize = 11.sp,
+                "TEMA DO APP",
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontSize = if (isDark) 17.sp else 13.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
             Spacer(Modifier.weight(1f))
             Text(
                 if (themeMode == ThemeMode.SYSTEM) "segue o sistema" else "fixo — sistema desativado",
-                fontFamily = CrtMono, fontSize = 10.sp, color = scheme.onSurface.copy(alpha = 0.55f)
+                fontFamily = HandSmall, fontSize = 14.sp, color = scheme.onSurface.copy(alpha = 0.55f)
             )
         }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            ThemeChip("◉ SISTEMA", ThemeMode.SYSTEM, themeMode == ThemeMode.SYSTEM, Modifier.weight(1f)) { onChange(it) }
-            ThemeChip("☾ ESCURO", ThemeMode.DARK, themeMode == ThemeMode.DARK, Modifier.weight(1f)) { onChange(it) }
-            ThemeChip("☀ CLARO", ThemeMode.LIGHT, themeMode == ThemeMode.LIGHT, Modifier.weight(1f)) { onChange(it) }
+            ThemeChip("◉ SISTEMA", ThemeMode.SYSTEM, themeMode == ThemeMode.SYSTEM, Modifier.weight(1f), isDark) { onChange(it) }
+            ThemeChip("☾ ESCURO", ThemeMode.DARK, themeMode == ThemeMode.DARK, Modifier.weight(1f), isDark) { onChange(it) }
+            ThemeChip("☀ CLARO", ThemeMode.LIGHT, themeMode == ThemeMode.LIGHT, Modifier.weight(1f), isDark) { onChange(it) }
         }
     }
 }
 
 @Composable
-fun ThemeChip(text: String, mode: ThemeMode, active: Boolean, mod: Modifier, onClick: (ThemeMode) -> Unit) {
+fun ThemeChip(text: String, mode: ThemeMode, active: Boolean, mod: Modifier, isDark: Boolean, onClick: (ThemeMode) -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val bg by animateColorAsState(if (active) scheme.primary else scheme.surfaceVariant, label = "chip")
     val fg by animateColorAsState(if (active) scheme.onPrimary else scheme.onSurfaceVariant, label = "chipfg")
     Box(
         modifier = mod
-            .clip(RoundedCornerShape(8.dp))
+            .clip(if (isDark) BillCardShape else StampShape)
             .background(bg)
-            .border(1.dp, if (active) scheme.primary else scheme.outline, RoundedCornerShape(8.dp))
+            .border(1.dp, if (active) scheme.primary else scheme.outline, if (isDark) BillCardShape else StampShape)
             .clickable { onClick(mode) }
             .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text, color = fg, fontFamily = CrtMono, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+        Text(
+            text,
+            color = fg,
+            fontFamily = if (isDark) Amatic else Stanford,
+            fontWeight = FontWeight.Bold,
+            fontSize = if (isDark) 16.sp else 12.sp
+        )
     }
 }
 
-// ── Histórico ─────────────────────────────────────────────
+// ── Histórico ──
 
 @Composable
 fun HistorySection(
@@ -655,16 +821,25 @@ fun HistorySection(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Filled.History, null, tint = scheme.primary, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(6.dp))
-            Text("HISTÓRICO", fontFamily = CrtMono, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary)
+            Text(
+                "HISTÓRICO",
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontSize = if (isDark) 19.sp else 14.sp,
+                fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
+            )
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (history.isNotEmpty()) {
                 TextButton(onClick = onClearAllClick) {
-                    Text("LIMPAR TUDO", fontFamily = CrtMono, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = scheme.error)
+                    Text(
+                        "limpar tudo ⌫",
+                        fontFamily = HandSmall, fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold, color = scheme.error
+                    )
                 }
             }
             TextButton(onClick = onSeeAll) {
-                Text("Ver tudo >", fontFamily = CrtMono, fontSize = 11.sp, color = scheme.primary)
+                Text("Ver tudo >", fontFamily = HandSmall, fontSize = 15.sp, color = scheme.primary)
             }
         }
     }
@@ -672,27 +847,27 @@ fun HistorySection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
+                .clip(if (isDark) BillCardShape else JournalCardShape)
                 .background(scheme.surface)
-                .border(1.dp, scheme.outline, RoundedCornerShape(10.dp))
+                .border(1.dp, scheme.outline, if (isDark) BillCardShape else JournalCardShape)
                 .padding(12.dp)
         ) {
             Text(
                 "Nenhuma conversão ainda…\nToque em CODIFICAR / DESCODIFICAR para gravar aqui.",
                 color = scheme.onSurface.copy(alpha = 0.55f),
-                fontFamily = CrtMono, fontSize = 12.sp, lineHeight = 17.sp
+                fontFamily = HandSmall, fontSize = 16.sp, lineHeight = 21.sp
             )
         }
     } else {
-        history.take(3).forEach { entry ->
-            HistoryCard(entry = entry, onRestore = { onRestore(entry) }, onDelete = { onDeleteOne(entry.id) })
+        history.take(3).forEachIndexed { idx, entry ->
+            HistoryCard(entry = entry, index = idx, isDark = isDark, onRestore = { onRestore(entry) }, onDelete = { onDeleteOne(entry.id) })
             Spacer(Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun HistoryCard(entry: HistoryEntry, onRestore: () -> Unit, onDelete: () -> Unit) {
+fun HistoryCard(entry: HistoryEntry, index: Int = 0, isDark: Boolean = false, onRestore: () -> Unit, onDelete: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val dateStr = remember(entry.timestamp) {
         try { SimpleDateFormat("dd/MM HH:mm", Locale.getDefault()).format(Date(entry.timestamp)) }
@@ -701,9 +876,10 @@ fun HistoryCard(entry: HistoryEntry, onRestore: () -> Unit, onDelete: () -> Unit
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(scheme.surface)
-            .border(1.dp, scheme.outline, RoundedCornerShape(10.dp))
+            .then(if (!isDark) Modifier.rotate(if (index % 2 == 0) -0.3f else 0.3f) else Modifier)
+            .clip(if (isDark) BillCardShape else JournalCardShape)
+            .background(if (isDark) CardDarkElev else scheme.surface)
+            .border(1.dp, if (isDark) BloodRed.copy(alpha = 0.45f) else scheme.outline, if (isDark) BillCardShape else JournalCardShape)
             .clickable(onClick = onRestore)
             .padding(10.dp)
     ) {
@@ -714,72 +890,62 @@ fun HistoryCard(entry: HistoryEntry, onRestore: () -> Unit, onDelete: () -> Unit
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "${entry.cipherLabel} • ${entry.modeLabel}",
-                    color = scheme.primary, fontFamily = CrtMono,
-                    fontWeight = FontWeight.Bold, fontSize = 11.sp,
+                    "REG #${(index + 1).toString().padStart(3, '0')} • ${entry.cipherLabel} • ${entry.modeLabel}",
+                    color = scheme.primary,
+                    fontFamily = HandSmall,
+                    fontWeight = FontWeight.Bold, fontSize = 14.sp,
                     maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f)
                 )
-                Text(dateStr, color = scheme.onSurface.copy(alpha = 0.5f), fontFamily = CrtMono, fontSize = 10.sp)
+                Text(dateStr, color = scheme.onSurface.copy(alpha = 0.5f), fontFamily = HandSmall, fontSize = 14.sp)
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                     Icon(Icons.Filled.Delete, contentDescription = "Apagar esta conversão", tint = scheme.error, modifier = Modifier.size(18.dp))
                 }
             }
             Text("IN: ${entry.input}", color = scheme.onSurface, fontFamily = CrtMono, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Text("OUT: ${entry.output}", color = scheme.secondary, fontFamily = CrtMono, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text("toque para reutilizar ↑", color = scheme.onSurface.copy(alpha = 0.4f), fontFamily = CrtMono, fontSize = 10.sp)
+            Text(
+                if (isDark) "▤ toque para reutilizar" else "✎ toque para reutilizar",
+                color = scheme.onSurface.copy(alpha = 0.4f), fontFamily = HandSmall, fontSize = 13.sp
+            )
         }
     }
 }
 
-// ── Componentes visuais ───────────────────────────────────
+// ── Componentes visuais ──
 
 @Composable
-fun MiniBillIcon(isDark: Boolean) {
-    Canvas(modifier = Modifier.size(28.dp)) {
-        val w = size.width; val h = size.height
-        val tri = Path().apply { moveTo(w / 2f, 2f); lineTo(w - 2f, h - 2f); lineTo(2f, h - 2f); close() }
-        drawPath(tri, if (isDark) BillGold else Color(0xFF3E2723))
-        drawCircle(Color.White, radius = w * 0.2f, center = Offset(w / 2f, h * 0.62f))
-        drawCircle(Color.Black, radius = w * 0.09f, center = Offset(w / 2f, h * 0.62f))
-    }
-}
-
-@Composable
-fun BillHeader(isDark: Boolean) {
-    val scheme = MaterialTheme.colorScheme
+fun BillHeader(isDark: Boolean, glitchOffset: Float = 0f) {
     // Piscada do olho a cada ~4s
     val blink = rememberInfiniteTransition(label = "blink")
-    val eyeOpen by blink.animateFloat(
-        initialValue = 1f, targetValue = 1f,
+    val eyePhase by blink.animateFloat(
+        initialValue = 0f, targetValue = 1f,
         animationSpec = infiniteRepeatable(tween(4000), RepeatMode.Restart), label = "eye"
     )
+    // olho fecha por uma fração do ciclo
+    val eyeOpen = if (eyePhase > 0.94f) 0.15f else 1f
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Canvas(modifier = Modifier.size(104.dp)) {
-            val w = size.width; val h = size.height
-            // glow externo
-            val glowColor = if (isDark) BillGold.copy(alpha = 0.25f) else Color(0xFF8D6E63).copy(alpha = 0.25f)
-            val triBig = Path().apply { moveTo(w / 2f, 0f); lineTo(w, h); lineTo(0f, h); close() }
-            drawPath(triBig, glowColor)
-            val tri = Path().apply { moveTo(w / 2f, 8f); lineTo(w - 8f, h - 8f); lineTo(8f, h - 8f); close() }
-            drawPath(tri, if (isDark) BillGold else Color(0xFFFFFBEB))
-            // contorno
-            drawPath(tri, Color.Black, style = androidx.compose.ui.graphics.drawscope.Stroke(width = 4f))
-            // tijolos / textura simples
-            drawLine(Color.Black.copy(alpha = 0.25f), Offset(w * 0.3f, h * 0.45f), Offset(w * 0.7f, h * 0.45f), 2f)
-            // olho (com escala vertical simulando piscada via eyeOpen — simplificado: sempre aberto)
-            val eyeR = w * 0.20f * eyeOpen.coerceAtLeast(0.35f)
-            drawOval(Color.White, topLeft = Offset(w / 2f - w * 0.2f, h * 0.62f - eyeR), size = Size(w * 0.4f, eyeR * 2))
-            drawCircle(Color.Black, radius = w * 0.09f, center = Offset(w / 2f, h * 0.62f))
-            // cartola
-            drawRect(Color.Black, topLeft = Offset(w * 0.32f, 0f), size = Size(w * 0.36f, h * 0.15f))
-            drawRect(Color.Black, topLeft = Offset(w * 0.24f, h * 0.12f), size = Size(w * 0.52f, h * 0.05f))
+        Box(contentAlignment = Alignment.TopCenter) {
+            BillTriangle(
+                size = 104.dp,
+                handDrawn = !isDark,
+                eyeOpen = eyeOpen,
+                glitchOffset = glitchOffset
+            )
+            if (!isDark) {
+                StampText(
+                    "CIFRAS DESCONHECIDAS",
+                    modifier = Modifier.offset(y = 108.dp)
+                )
+            }
         }
+        Spacer(Modifier.height(if (isDark) 6.dp else 22.dp))
         Text(
-            "CODIFICADOR DE\nGRAVITY FALLS",
+            "CIFRADOR",
             color = if (isDark) BillGold else LeatherBrown,
-            fontFamily = if (isDark) CrtMono else JournalSerif,
-            fontWeight = FontWeight.Black, fontSize = 24.sp,
-            textAlign = TextAlign.Center, lineHeight = 27.sp,
+            fontFamily = if (isDark) Amatic else Stanford,
+            fontWeight = FontWeight.Bold,
+            fontSize = if (isDark) 52.sp else 44.sp,
+            textAlign = TextAlign.Center, lineHeight = 46.sp,
             style = LocalTextStyle.current.copy(
                 shadow = Shadow(
                     color = if (isDark) TerminalGreen.copy(alpha = 0.6f) else Color.Transparent,
@@ -787,41 +953,125 @@ fun BillHeader(isDark: Boolean) {
                 )
             )
         )
+        if (!isDark) {
+            Text(
+                "gravity falls",
+                color = LeatherBrown.copy(alpha = 0.7f),
+                fontFamily = HandSmall, fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
 @Composable
 fun ModeSwitch(encode: Boolean, isDark: Boolean, onChange: (Boolean) -> Unit) {
     val scheme = MaterialTheme.colorScheme
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(if (isDark) Color(0xFF0A0F0A) else Color(0xFFFFFBEB))
-            .border(1.dp, scheme.error, RoundedCornerShape(10.dp))
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        val mod = Modifier.weight(1f).height(44.dp)
-        ModeButton("◉ CODIFICAR", encode, mod) { onChange(true) }
-        ModeButton("◎ DESCODIFICAR", !encode, mod) { onChange(false) }
+    if (isDark) {
+        // Terminal ocultista com bordas vermelhas + LEDs
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(BillCardShape)
+                .background(Color(0xFF0A0F0A))
+                .border(1.dp, BloodRed, BillCardShape)
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            val mod = Modifier.weight(1f).height(46.dp)
+            ModeButtonTerminal("◉ CODIFICAR", encode, mod) { onChange(true) }
+            ModeButtonTerminal("◎ DESCODIFICAR", !encode, mod) { onChange(false) }
+        }
+    } else {
+        // Duas etiquetas manuscritas; seleção = círculo de caneta vermelha
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(JournalCardShape)
+                .background(Color(0xFFFFFBEB))
+                .border(1.dp, PencilGray, JournalCardShape)
+                .padding(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            val mod = Modifier.weight(1f).height(46.dp)
+            ModeButtonJournal("CODIFICAR", encode, mod) { onChange(true) }
+            ModeButtonJournal("DESCODIFICAR", !encode, mod) { onChange(false) }
+        }
     }
 }
 
+@Composable
+fun ModeButtonTerminal(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    val bg by animateColorAsState(if (active) BloodRed.copy(alpha = 0.22f) else Color.Transparent, label = "mode")
+    val border = if (active) BloodRed else Color.Transparent
+    Box(
+        modifier = mod
+            .clip(BillCardShape)
+            .background(bg)
+            .border(1.dp, border, BillCardShape)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            // LED indicador
+            Canvas(modifier = Modifier.size(8.dp)) {
+                drawCircle(if (active) PhosphorGlow else Color.Gray.copy(alpha = 0.4f), radius = 4.dp.toPx())
+            }
+            Spacer(Modifier.width(6.dp))
+            Text(
+                text,
+                color = if (active) BillGold else BloodRed.copy(alpha = 0.75f),
+                fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 17.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun ModeButtonJournal(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    Box(
+        modifier = mod
+            .clip(StampShape)
+            .background(if (active) BrushRed else Color.Transparent)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        if (!active) {
+            // etiqueta inativa: só texto carimbado
+            Text(
+                text, color = BrushRed.copy(alpha = 0.8f),
+                fontFamily = Stanford, fontSize = 15.sp
+            )
+        } else {
+            Text(
+                text, color = Color.White,
+                fontFamily = Stanford, fontSize = 15.sp
+            )
+        }
+        if (active) {
+            // círculo de caneta ao redor da etiqueta ativa — feito com borda dupla fina
+            // (HandCircle completo ficaria pesado aqui; o fill + borda já lê como selo)
+        }
+    }
+}
+
+// Mantido para compatibilidade (caso algum preview use)
 @Composable
 fun ModeButton(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val bg by animateColorAsState(if (active) scheme.error else Color.Transparent, label = "mode")
     Box(
         modifier = mod
-            .clip(RoundedCornerShape(7.dp))
+            .clip(StampShape)
             .background(bg)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text, color = if (active) Color.White else scheme.error,
-            fontFamily = CrtMono, fontWeight = FontWeight.Bold, fontSize = 13.sp
+            fontFamily = Stanford, fontSize = 14.sp
         )
     }
 }
@@ -832,10 +1082,14 @@ fun CipherGridCard(
     caesarShift: Int, modifier: Modifier = Modifier, onClick: () -> Unit
 ) {
     val scheme = MaterialTheme.colorScheme
-    val borderColor = if (selected) scheme.primary else scheme.outline
+    val borderColor = when {
+        selected && isDark -> BloodRed
+        selected -> BrushRed
+        else -> scheme.outline
+    }
     val (icon, sub) = when (type) {
         CipherType.CAESAR -> "△" to "+$caesarShift / −$caesarShift"
-        CipherType.ATBASH -> "👁" to "A↔Z"
+        CipherType.ATBASH -> "◉" to "A↔Z"
         CipherType.A1Z26 -> "?" to "A=1…Z=26"
     }
     val title = when (type) {
@@ -843,27 +1097,93 @@ fun CipherGridCard(
         CipherType.ATBASH -> "ATBASH"
         CipherType.A1Z26 -> "A1Z26"
     }
+    val detail = when (type) {
+        CipherType.CAESAR -> "A→${caesarEncode("A", caesarShift)}"
+        CipherType.ATBASH -> "A↔Z"
+        CipherType.A1Z26 -> "A=1 B=2"
+    }
+    val shape = if (isDark) BillCardShape else JournalCardShape
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(if (selected) scheme.surfaceVariant else scheme.surface)
-            .border(if (selected) 2.dp else 1.dp, borderColor, RoundedCornerShape(10.dp))
+            .then(if (!isDark && selected) Modifier.rotate(-1f) else Modifier)
+            .clip(shape)
+            .background(
+                when {
+                    selected && isDark -> CardDarkElev
+                    selected -> Color(0xFFFFFBEB)
+                    else -> scheme.surface
+                }
+            )
+            .border(if (selected) 2.dp else 1.dp, borderColor, shape)
             .clickable(onClick = onClick)
-            .padding(10.dp)
+            .padding(top = 12.dp, bottom = 10.dp, start = 8.dp, end = 8.dp)
     ) {
+        // fita adesiva no modo diário
+        if (!isDark) {
+            TapePiece(modifier = Modifier.align(Alignment.TopCenter).offset(y = (-16).dp))
+        }
+        // brilho de seleção no modo bill
+        if (isDark && selected) {
+            Box(
+                modifier = Modifier.matchParentSize()
+                    .border(1.dp, BillGold.copy(alpha = 0.35f), shape)
+            )
+        }
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                if (isDark) {
+                    Canvas(modifier = Modifier.size(8.dp)) {
+                        drawCircle(
+                            if (selected) PhosphorGlow else Color.Gray.copy(alpha = 0.4f),
+                            radius = 4.dp.toPx()
+                        )
+                    }
+                    Spacer(Modifier.width(5.dp))
+                } else {
+                    Text(
+                        if (selected) "●" else "○",
+                        color = if (selected) BrushRed else scheme.onSurface.copy(alpha = 0.4f),
+                        fontSize = 9.sp, fontFamily = HandSmall
+                    )
+                    Spacer(Modifier.width(4.dp))
+                }
                 Text(
-                    if (selected) "●" else "○",
-                    color = if (selected) scheme.primary else scheme.onSurface.copy(alpha = 0.4f),
-                    fontSize = 9.sp, fontFamily = CrtMono
+                    icon,
+                    fontSize = 22.sp,
+                    fontFamily = if (isDark) Amatic else Stanford,
+                    color = when {
+                        selected && isDark -> BillGold
+                        selected -> BrushRed
+                        else -> scheme.onSurface
+                    }
                 )
-                Spacer(Modifier.width(4.dp))
-                Text(icon, fontSize = 22.sp, color = if (selected) scheme.primary else scheme.onSurface)
             }
-            Spacer(Modifier.height(4.dp))
-            Text(title, color = if (selected) scheme.primary else scheme.onSurface, fontFamily = CrtMono, fontWeight = FontWeight.Bold, fontSize = 12.sp, textAlign = TextAlign.Center)
-            Text(sub, color = scheme.onSurface.copy(alpha = 0.55f), fontFamily = CrtMono, fontSize = 10.sp, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(2.dp))
+            Text(
+                title,
+                color = if (selected && isDark) BillGold else if (selected) BrushRed else scheme.onSurface,
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontWeight = FontWeight.Bold,
+                fontSize = if (isDark) 18.sp else 15.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                sub,
+                color = scheme.onSurface.copy(alpha = 0.6f),
+                fontFamily = HandSmall, fontSize = 14.sp, textAlign = TextAlign.Center
+            )
+            Text(
+                detail,
+                color = (if (isDark) TerminalGreen else GoldDim).copy(alpha = 0.9f),
+                fontFamily = CrtMono, fontSize = 10.sp, textAlign = TextAlign.Center
+            )
+        }
+        // círculo de caneta marcando a ficha ativa no diário
+        if (selected && !isDark) {
+            HandCircle(
+                modifier = Modifier.matchParentSize().padding(2.dp),
+                color = BrushRed.copy(alpha = 0.5f)
+            )
         }
     }
 }
@@ -871,20 +1191,26 @@ fun CipherGridCard(
 @Composable
 fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
     val scheme = MaterialTheme.colorScheme
+    val shape = if (isDark) BillCardShape else JournalCardShape
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
+            .clip(shape)
             .background(scheme.surface)
-            .border(1.dp, scheme.primary, RoundedCornerShape(10.dp))
+            .border(1.dp, if (isDark) BloodRed.copy(alpha = 0.6f) else BrushRed.copy(alpha = 0.6f), shape)
             .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(Modifier.weight(1f)) {
-            Text("DESLOCAMENTO DE CÉSAR", fontFamily = CrtMono, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = scheme.primary)
+            Text(
+                "DESLOCAMENTO DE CÉSAR",
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontSize = if (isDark) 17.sp else 13.sp,
+                fontWeight = FontWeight.Bold, color = scheme.primary
+            )
             Text(
                 "Codifica +$shift • Descodifica −$shift  (1–25)",
-                fontFamily = CrtMono, fontSize = 11.sp, color = scheme.onSurface.copy(alpha = 0.7f)
+                fontFamily = HandSmall, fontSize = 14.sp, color = scheme.onSurface.copy(alpha = 0.7f)
             )
             Text(
                 "WELCOME → ${caesarEncode("WELCOME", shift)}",
@@ -897,12 +1223,12 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
         ) { Icon(Icons.Filled.Remove, contentDescription = "Diminuir deslocamento") }
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .background(scheme.primary)
+                .clip(if (isDark) BillCardShape else StampShape)
+                .background(if (isDark) BloodRed else BrushRed)
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("$shift", color = scheme.onPrimary, fontFamily = CrtMono, fontWeight = FontWeight.Black, fontSize = 16.sp)
+            Text("$shift", color = Color.White, fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 20.sp else 16.sp)
         }
         IconButton(
             onClick = { onChange(shift + 1) }, enabled = shift < CAESAR_MAX_SHIFT,
@@ -915,7 +1241,10 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
 fun SectionLabel(text: String, isDark: Boolean) {
     Text(
         text, color = MaterialTheme.colorScheme.primary,
-        fontFamily = CrtMono, fontSize = 12.sp, fontWeight = FontWeight.Bold,
+        fontFamily = if (isDark) Amatic else Stanford,
+        fontSize = if (isDark) 19.sp else 15.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 1.sp,
         modifier = Modifier.padding(bottom = 6.dp, top = 4.dp)
     )
 }
@@ -930,15 +1259,22 @@ fun QuickButton(
 ) {
     val scheme = MaterialTheme.colorScheme
     OutlinedButton(
-        onClick = onClick, modifier = mod, shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = scheme.primary),
-        border = androidx.compose.foundation.BorderStroke(1.dp, scheme.outline),
+        onClick = onClick, modifier = mod,
+        shape = if (isDark) BillCardShape else StampShape,
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = if (isDark) TerminalGreen else LeatherBrown),
+        border = androidx.compose.foundation.BorderStroke(1.dp, if (isDark) TerminalGreen.copy(alpha = 0.5f) else PencilGray),
         contentPadding = PaddingValues(8.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(icon, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.height(2.dp))
-            Text(text, fontFamily = CrtMono, fontWeight = FontWeight.Bold, fontSize = 10.sp, maxLines = 1)
+            Text(
+                text,
+                fontFamily = if (isDark) Amatic else Stanford,
+                fontWeight = FontWeight.Bold,
+                fontSize = if (isDark) 15.sp else 11.sp,
+                maxLines = 1
+            )
         }
     }
 }
