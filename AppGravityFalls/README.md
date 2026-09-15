@@ -1,25 +1,70 @@
-# △ Codificador Gravity Falls
+# △ Gravity Falls Cipher Encoder
 
-App em **Kotlin + Jetpack Compose** que codifica e descodifica as 3 cifras clássicas da série *Gravity Falls* (Alex Hirsch), com estética inspirada no site [thisisnotawebsitedotcom.com](https://thisisnotawebsitedotcom.com/).
+A **Kotlin + Jetpack Compose** Android app that encodes and decodes the 3 classic ciphers from the TV series *Gravity Falls* (by Alex Hirsch), with aesthetics inspired by [thisisnotawebsitedotcom.com](https://thisisnotawebsitedotcom.com/).
 
-## Tema claro / escuro automático (sem opção manual)
+## 📋 Table of Contents
 
-O app **segue o sistema** via `isSystemInDarkTheme()` — não há botão de troca:
+- [Theme System](#-automatic-dark--light-theme)
+- [Implemented Ciphers](#-implemented-ciphers)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [Features](#-features)
+- [Quick Tests](#-quick-tests)
 
-- **Celular em modo escuro** → terminal CRT preto/verde do Bill (fundo preto, texto verde-fósforo, scanlines).
-- **Celular em modo claro** → Diário do Dipper (fundo pergaminho `#F3EAD3`, texto marrom, destaques em vermelho-journal e dourado-queimado).
+---
 
-Para testar: mude o tema do celular/emulador em Configurações → Tema, o app muda sozinho.
+## 🎨 Automatic Dark & Light Theme
 
-## Cifras implementadas
+The app **automatically follows your device's system theme** via `isSystemInDarkTheme()` — there is **no manual toggle button**:
 
-| Cifra | Como funciona | Exemplo |
+### Dark Mode (Bill's Terminal)
+- **Background**: Black (`#000000`)
+- **Text**: Phosphor green (`#00FF41`)
+- **Effect**: CRT terminal aesthetic with scanlines
+- **Activated when**: Device is in dark mode
+
+### Light Mode (Dipper's Journal)
+- **Background**: Parchment (`#F3EAD3`)
+- **Text**: Dark brown
+- **Highlights**: Journal red and burned gold
+- **Activated when**: Device is in light mode
+
+**How to test:** Change your device/emulator theme in Settings → Display → Theme, and the app will update automatically without restart.
+
+---
+
+## 🔐 Implemented Ciphers
+
+| Cipher | How It Works | Example |
 |---|---|---|
-| **César** | Cada letra deslocada 3 posições. Codificar = +3 (A→D), Descodificar = −3 (D→A) | `WELCOME TO GRAVITY FALLS` ⇄ `ZHOFRPH WR JUDYLWB IDOOV` |
-| **Atbash** | Alfabeto invertido: A↔Z, B↔Y, C↔X… (simétrica) | `WELCOME` ⇄ `DVOXLNV` |
-| **A1Z26** | Letra → número: A=1 … Z=26. `/` = espaço | `WELCOME` ⇄ `23 5 12 3 15 13 5` |
+| **Caesar** | Each letter shifted 3 positions. Encode = +3 (A→D), Decode = −3 (D→A) | `WELCOME TO GRAVITY FALLS` ⇄ `ZHOFRPH WR JUDYLWB IDOOV` |
+| **Atbash** | Reversed alphabet: A↔Z, B↔Y, C↔X… (symmetric) | `WELCOME` ⇄ `DVOXLNV` |
+| **A1Z26** | Letter → number: A=1 … Z=26. `/` = space | `WELCOME` ⇄ `23 5 12 3 15 13 5` |
 
-## Estrutura
+### Cipher Details
+
+#### Caesar Cipher
+- Shifts each letter by a fixed offset (default: 3, as per the show)
+- Preserves case (uppercase/lowercase)
+- Non-alphabetic characters are preserved unchanged
+- Wraps around alphabet (e.g., Z+1 = A)
+
+#### Atbash Cipher
+- **Symmetric**: encoding and decoding use the same operation
+- Alphabet mapping: A↔Z, B↔Y, C↔X, etc.
+- Preserves case and non-alphabetic characters
+- Useful for simple obfuscation
+
+#### A1Z26 Cipher
+- **Encoding**: Each letter converts to its position (A=1, B=2, ... Z=26)
+- **Decoding**: Numbers convert back to letters
+- Separator: Space, comma, or hyphen between numbers
+- Special: `/` represents a space in the plaintext
+- Tolerant parsing: accepts multiple separators and ignores invalid characters
+
+---
+
+## 📁 Project Structure
 
 ```
 AppGravityFalls/
@@ -31,48 +76,142 @@ AppGravityFalls/
     └── src/main/
         ├── AndroidManifest.xml
         ├── java/com/gravityfalls/codificador/
-        │   ├── MainActivity.kt          # Activity + setContent
-        │   ├── ciphers/Ciphers.kt       # lógica pura das 3 cifras
-        │   ├── history/HistoryStore.kt  # histórico (SharedPreferences + JSON)
+        │   ├── MainActivity.kt              # Activity + setContent() entry point
+        │   ├── ciphers/Ciphers.kt           # Pure cipher logic (Caesar, Atbash, A1Z26)
+        │   ├── history/HistoryStore.kt      # Conversion history (SharedPreferences + JSON)
         │   └── ui/
-        │       ├── CipherScreen.kt      # UI + histórico
-        │       └── theme/Theme.kt       # paletas dark CRT + light Diário
-        └── res/values/strings.xml, themes.xml
+        │       ├── CipherScreen.kt          # Main UI + history display
+        │       └── theme/Theme.kt           # Dark CRT + Light Journal color palettes
+        └── res/
+            ├── values/strings.xml
+            └── values/themes.xml
 ```
 
-## Como abrir e rodar
+### Key Modules
 
-1. Abra o **Android Studio** → *Open* → selecione a pasta `AppGravityFalls`.
-2. Aguarde o sync do Gradle (usa AGP 8.5.2, Kotlin 2.0.21, Compose BOM 2024.10.00).
-3. Rode em um emulador ou dispositivo físico (minSdk 26).
+- **MainActivity.kt**: Entry point, initializes Compose UI
+- **Ciphers.kt**: Stateless functions for all three cipher operations
+- **HistoryStore.kt**: Persistence layer using SharedPreferences + JSON serialization
+- **CipherScreen.kt**: Main Composable with input field, cipher selection, and result display
+- **Theme.kt**: Color definitions for light/dark modes
 
-Ou via linha de comando (com o SDK já instalado):
+---
+
+## 🚀 Installation & Setup
+
+### Via Android Studio
+
+1. Open **Android Studio**
+2. Click *File* → *Open* → Select the `AppGravityFalls` folder
+3. Wait for Gradle sync to complete (uses AGP 8.5.2, Kotlin 2.0.21, Compose BOM 2024.10.00)
+4. Run on an emulator or physical device (minSdk 26)
+
+### Via Command Line
+
+With Android SDK installed:
 
 ```powershell
-cd C:\Users\Admin\Documents\AppGravityFalls
+cd AppGravityFalls
 .\gradlew.bat assembleDebug
 adb install -r app\build\outputs\apk\debug\app-debug.apk
+adb shell am start -n com.gravityfalls.codificador/.MainActivity
 ```
 
-## Funções do app
+### Requirements
 
-- Alternância **CODIFICAR / DESCODIFICAR** (estilo botão vermelho do site).
-- Seleção de cifra em cards `[●]` tipo terminal.
-- Conversão **automática** ao digitar + botão manual.
-- Botões **EXEMPLO** (carrega `WELCOME TO GRAVITY FALLS` e equivalentes), **LIMPAR**, **TROCAR ⇄** (joga o resultado para a entrada e inverte o modo) e **COPIAR RESULTADO**.
-- **Histórico de conversões** (persistido mesmo fechando o app):
-  - grava a cada toque em CODIFICAR/DESCODIFICAR (máx. 50, mais recentes primeiro);
-  - toque num item para **reutilizar** (restaura cifra, modo e entrada);
-  - lixeira em cada card para **apagar um** item;
-  - botão **LIMPAR TUDO** com diálogo de confirmação.
-- A1Z26 tolerante: aceita espaços, vírgulas e hífens na descodificação; `/` = espaço.
-- Preserva maiúsculas/minúsculas em César e Atbash; ignora pontuação sem quebrar.
+- **Android SDK**: API 26 (Android 8.0) or higher
+- **Kotlin**: 2.0.21+
+- **Compose**: 2024.10.00 BOM
 
-## Testes rápidos
+---
 
-- César descodificar: `ZHOFRPH WR JUDYLWB IDOOV` → `WELCOME TO GRAVITY FALLS`
-- Atbash codificar: `WELCOME` → `DVOXLNV`
-- A1Z26 codificar: `WELCOME` → `23 5 12 3 15 13 5`
-- A1Z26 descodificar: `23 5 12 3 15 13 5 / 20 15 / 7 18 1 22 9 20 25 / 6 1 12 12 19` → `WELCOME TO GRAVITY FALLS`
+## ✨ Features
 
-> ⚠ NÃO CONFIE NO TRIÂNGULO. A realidade é uma ilusão, o universo é um holograma, compre ouro, adeus!
+### Core Functionality
+- **Encode / Decode Toggle**: Switch between modes with a red-styled button (inspired by the website)
+- **Cipher Selection**: Cards with `[●]` style (terminal-like appearance)
+- **Auto-Conversion**: Updates result as you type, with an optional manual button
+- **Multi-Action Buttons**:
+  - **EXAMPLE**: Loads `WELCOME TO GRAVITY FALLS` and its encoded variants
+  - **CLEAR**: Clears all input fields
+  - **SWAP** (⇄): Moves the result to input, inverts the mode
+  - **COPY RESULT**: Copies to clipboard
+
+### Conversion History
+- **Automatic Saving**: Every encode/decode action is logged (max 50 entries, newest first)
+- **Persistence**: History survives app restart (stored in SharedPreferences)
+- **Reuse**: Tap a history item to restore the cipher, mode, and input
+- **Delete Single**: Trash icon on each history card
+- **Clear All**: Button with confirmation dialog to wipe history
+- **Display**: Shows input → output for quick reference
+
+### Input Tolerance
+- **Caesar & Atbash**:
+  - Preserves case (uppercase/lowercase)
+  - Ignores punctuation, numbers, and special characters
+  - Only transforms alphabetic characters
+- **A1Z26**:
+  - Accepts numbers separated by spaces, commas, or hyphens
+  - Tolerates extra whitespace
+  - `/` represents a space in decoded text
+  - Silently skips invalid characters
+
+---
+
+## ✅ Quick Tests
+
+### Caesar Cipher
+- **Decode**: `ZHOFRPH WR JUDYLWB IDOOV` → `WELCOME TO GRAVITY FALLS`
+- **Encode**: `WELCOME TO GRAVITY FALLS` → `ZHOFRPH WR JUDYLWB IDOOV`
+- **Mixed case**: `Welcome` → `Zhofrph`
+
+### Atbash Cipher
+- **Encode**: `WELCOME` → `DVOXLNV`
+- **Decode**: `DVOXLNV` → `WELCOME` (symmetric)
+- **With punctuation**: `Hello, World!` → `Svool, Dliow!`
+
+### A1Z26 Cipher
+- **Encode**: `WELCOME` → `23 5 12 3 15 13 5`
+- **Decode**: `23 5 12 3 15 13 5` → `WELCOME`
+- **Sentence**: `23 5 12 3 15 13 5 / 20 15 / 7 18 1 22 9 20 25 / 6 1 12 12 19` → `WELCOME TO GRAVITY FALLS`
+- **Alternative separators**: `23-5-12-3-15-13-5` or `23,5,12,3,15,13,5` (both work)
+
+---
+
+## 📝 Troubleshooting
+
+### App doesn't switch themes
+- Ensure your device theme setting is active (not forcing light/dark in app settings)
+- Check that `isSystemInDarkTheme()` is being called in the Compose recomposition
+
+### History not persisting
+- Verify app has Write permissions in device settings
+- Check that SharedPreferences is not being cleared by system
+
+### A1Z26 decode fails
+- Ensure numbers are separated by space, comma, or hyphen
+- Check that numbers are in range 1-26
+- Use `/` for spaces in the plaintext (not a space character)
+
+---
+
+## 📦 Dependencies
+
+- **Kotlin**: 2.0.21
+- **Jetpack Compose**: 2024.10.00
+- **Android Gradle Plugin**: 8.5.2
+- **MinSDK**: 26
+- **CompileSDK**: 35
+
+---
+
+## 📖 References
+
+- [Gravity Falls Wiki](https://gravityfalls.fandom.com/)
+- [thisisnotawebsitedotcom.com](https://thisisnotawebsitedotcom.com/)
+- [Jetpack Compose Documentation](https://developer.android.com/jetpack/compose)
+- [Android Cryptography](https://developer.android.com/training/articles/keystore)
+
+---
+
+> ⚠️ **DO NOT TRUST THE TRIANGLE.** Reality is an illusion, the universe is a hologram, buy gold, bye!
