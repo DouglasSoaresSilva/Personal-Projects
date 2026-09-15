@@ -160,7 +160,8 @@ fun FootnoteScribble(
             text,
             color = color.copy(alpha = 0.55f),
             fontFamily = Amatic,
-            fontSize = 15.sp,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center
         )

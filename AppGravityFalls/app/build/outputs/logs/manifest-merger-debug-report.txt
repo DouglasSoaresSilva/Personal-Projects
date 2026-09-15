@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-20:12
-INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-20:12
-INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-20:12
-INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-20:12
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-22:12
+INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:1-22:12
 MERGED from [androidx.compose.material3:material3-android:1.3.0] C:\Users\Pichau\.gradle\caches\transforms-4\6f533d44a01e4b6e91a048f0b6d9e1b9\transformed\material3-release\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.material:material-android:1.7.4] C:\Users\Pichau\.gradle\caches\transforms-4\8ff3857bfafeaba707e6f5e7aa913ec8\transformed\material-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-ripple-android:1.7.4] C:\Users\Pichau\.gradle\caches\transforms-4\0c9a678901a72b87b3cb41406e95ccce\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
@@ -60,8 +60,8 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Pichau\.gradle\cach
 	xmlns:android
 		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:4:5-18:19
-INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:4:5-18:19
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:4:5-20:19
+INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:4:5-20:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.4] C:\Users\Pichau\.gradle\caches\transforms-4\cd8b157069b51cf1a60cc78e81942e55\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.4] C:\Users\Pichau\.gradle\caches\transforms-4\cd8b157069b51cf1a60cc78e81942e55\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-test-manifest:1.7.4] C:\Users\Pichau\.gradle\caches\transforms-4\396df51e857516e0f5c4ecd4836556ef\transformed\ui-test-manifest-1.7.4\AndroidManifest.xml:22:5-26:19
@@ -83,31 +83,35 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Pichau\.gradle\cac
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\Pichau\.gradle\caches\transforms-4\1eec0393bba75e2ee9a5fdc87d0708af\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:7:9-35
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:9:9-35
 	android:label
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:6:9-50
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:8:9-50
+	android:roundIcon
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:7:9-48
+	android:icon
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:6:9-43
 	android:allowBackup
 		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:5:9-35
 	android:theme
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:8:9-50
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:10:9-50
 activity#com.gravityfalls.codificador.MainActivity
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:9:9-17:20
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:11:9-19:20
 	android:exported
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:11:13-36
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:13:13-36
 	android:theme
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:12:13-54
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:14:13-54
 	android:name
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:10:13-41
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:12:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:13:13-16:29
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:15:13-18:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:14:17-69
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:16:17-69
 	android:name
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:14:25-66
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:16:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:15:17-77
+ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:17:17-77
 	android:name
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:15:27-74
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:17:27-74
 uses-sdk
 INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml

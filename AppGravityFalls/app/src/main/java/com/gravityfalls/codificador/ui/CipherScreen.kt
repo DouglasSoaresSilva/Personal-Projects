@@ -8,6 +8,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,12 +49,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gravityfalls.codificador.R
 import com.gravityfalls.codificador.ciphers.CAESAR_MAX_SHIFT
 import com.gravityfalls.codificador.ciphers.CAESAR_MIN_SHIFT
 import com.gravityfalls.codificador.ciphers.CipherType
@@ -63,7 +66,6 @@ import com.gravityfalls.codificador.ciphers.cipherExampleInput
 import com.gravityfalls.codificador.ciphers.runCipher
 import com.gravityfalls.codificador.history.HistoryEntry
 import com.gravityfalls.codificador.history.HistoryStore
-import com.gravityfalls.codificador.ui.decor.BillTriangle
 import com.gravityfalls.codificador.ui.decor.FootnoteScribble
 import com.gravityfalls.codificador.ui.decor.HandCircle
 import com.gravityfalls.codificador.ui.decor.MarginDoodles
@@ -140,15 +142,6 @@ fun CipherScreen(
         scope.launch { snackbar.showSnackbar("Copiado! O Bill viu isso… 👁") }
     }
 
-    // Glitch sutil do modo Bill — deslocamento de 1px por fracao de segundo
-    val glitchClock = rememberInfiniteTransition(label = "glitch")
-    val glitch by glitchClock.animateFloat(
-        initialValue = 0f, targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(7000), RepeatMode.Restart),
-        label = "glitchPos"
-    )
-    val glitchOffset = if (isDark && (glitch > 0.96f)) 1f else 0f
-
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = scheme.background
@@ -183,7 +176,7 @@ fun CipherScreen(
 
                 Spacer(Modifier.height(6.dp))
 
-                BillHeader(isDark = isDark, glitchOffset = glitchOffset)
+                BillHeader(isDark = isDark)
 
                 Spacer(Modifier.height(8.dp))
 
@@ -206,13 +199,15 @@ fun CipherScreen(
                 Text(
                     if (isDark) "RECORD OF UNKNOWN CODES" else "DIARIO N. 3 // PAGINA DE CIFRAS",
                     color = scheme.onBackground.copy(alpha = 0.6f),
-                    fontFamily = HandSmall, fontSize = 16.sp, textAlign = TextAlign.Center
+                    fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 17.sp,
+                    textAlign = TextAlign.Center
                 )
                 if (isDark) {
                     Text(
                         "DO NOT TRUST THE TRIANGLE",
                         color = BloodRed.copy(alpha = 0.7f),
-                        fontFamily = HandSmall, fontSize = 14.sp, textAlign = TextAlign.Center
+                        fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 15.sp,
+                        textAlign = TextAlign.Center
                     )
                 }
 
@@ -235,14 +230,14 @@ fun CipherScreen(
                         "ESCOLHA A CIFRA",
                         fontFamily = if (isDark) Amatic else Stanford,
                         fontWeight = FontWeight.Bold,
-                        fontSize = if (isDark) 18.sp else 16.sp,
+                        fontSize = if (isDark) 19.sp else 17.sp,
                         letterSpacing = 1.sp,
                         color = scheme.onBackground.copy(alpha = 0.8f),
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         "CLASSIFICACAO: CONFIDENCIAL",
-                        fontFamily = HandSmall, fontSize = 13.sp,
+                        fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 14.sp,
                         color = scheme.error.copy(alpha = 0.7f)
                     )
                 }
@@ -630,7 +625,7 @@ fun JournalToolbar(
         Column(Modifier.weight(1f)) {
             Text(
                 "ENTRADA N. 003",
-                fontFamily = HandSmall, fontSize = 16.sp,
+                fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 17.sp,
                 color = scheme.onBackground.copy(alpha = 0.65f),
                 letterSpacing = 1.sp
             )
@@ -638,7 +633,7 @@ fun JournalToolbar(
                 "CIFRAS DESCONHECIDAS",
                 fontFamily = if (isDark) Amatic else Stanford,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 17.sp else 14.sp,
+                fontSize = if (isDark) 18.sp else 15.sp,
                 color = if (isDark) TerminalGreen else LeatherBrown,
                 maxLines = 1, overflow = TextOverflow.Ellipsis
             )
@@ -914,22 +909,27 @@ fun HistoryCard(entry: HistoryEntry, index: Int = 0, isDark: Boolean = false, on
 // ── Componentes visuais ──
 
 @Composable
-fun BillHeader(isDark: Boolean, glitchOffset: Float = 0f) {
-    // Piscada do olho a cada ~4s
-    val blink = rememberInfiniteTransition(label = "blink")
-    val eyePhase by blink.animateFloat(
+fun BillHeader(isDark: Boolean) {
+    // Flutuacao lenta e sutil do Bill (PNG 500px em nodpi, exibido a ~120.dp)
+    val floatAnim = rememberInfiniteTransition(label = "billFloat")
+    val floatPhase by floatAnim.animateFloat(
         initialValue = 0f, targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(4000), RepeatMode.Restart), label = "eye"
+        animationSpec = infiniteRepeatable(tween(3200), RepeatMode.Reverse), label = "float"
     )
-    // olho fecha por uma fracao do ciclo
-    val eyeOpen = if (eyePhase > 0.94f) 0.15f else 1f
+    val driftY = ((floatPhase - 0.5f) * 12f).dp
+    val tilt = (floatPhase - 0.5f) * 2f
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(contentAlignment = Alignment.TopCenter) {
-            BillTriangle(
-                size = 104.dp,
-                handDrawn = !isDark,
-                eyeOpen = eyeOpen,
-                glitchOffset = glitchOffset
+            Image(
+                painter = painterResource(
+                    if (isDark) R.drawable.bill_floating_dark_mode
+                    else R.drawable.bill_floating_white_mode
+                ),
+                contentDescription = "Bill flutuando",
+                modifier = Modifier
+                    .size(140.dp)
+                    .offset(y = driftY)
+                    .rotate(tilt)
             )
             if (!isDark) {
                 StampText(
@@ -957,7 +957,7 @@ fun BillHeader(isDark: Boolean, glitchOffset: Float = 0f) {
             Text(
                 "gravity falls",
                 color = LeatherBrown.copy(alpha = 0.7f),
-                fontFamily = HandSmall, fontSize = 19.sp,
+                fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 20.sp,
                 textAlign = TextAlign.Center
             )
         }
@@ -1144,7 +1144,7 @@ fun CipherGridCard(
                 }
                 Text(
                     icon,
-                    fontSize = 22.sp,
+                    fontSize = 24.sp,
                     fontFamily = if (isDark) Amatic else Stanford,
                     color = when {
                         selected && isDark -> BillGold
@@ -1159,18 +1159,19 @@ fun CipherGridCard(
                 color = if (selected && isDark) BillGold else if (selected) BrushRed else scheme.onSurface,
                 fontFamily = if (isDark) Amatic else Stanford,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 19.sp else 16.sp,
+                fontSize = if (isDark) 21.sp else 18.sp,
                 textAlign = TextAlign.Center
             )
             Text(
                 sub,
                 color = scheme.onSurface.copy(alpha = 0.6f),
-                fontFamily = HandSmall, fontSize = 15.sp, textAlign = TextAlign.Center
+                fontFamily = HandSmall, fontWeight = FontWeight.Bold, fontSize = 16.sp,
+                textAlign = TextAlign.Center
             )
             Text(
                 detail,
                 color = (if (isDark) TerminalGreen else GoldDim).copy(alpha = 0.9f),
-                fontFamily = CrtMono, fontSize = 11.sp, textAlign = TextAlign.Center
+                fontFamily = CrtMono, fontSize = 12.sp, textAlign = TextAlign.Center
             )
         }
         // circulo de caneta marcando a ficha ativa no diario

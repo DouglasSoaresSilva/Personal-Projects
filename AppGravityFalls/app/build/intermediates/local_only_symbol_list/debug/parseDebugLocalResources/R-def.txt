@@ -1,7 +1,10 @@
 R_DEF: Internal format may change without notice
 local
+drawable bill_floating_dark_mode
+drawable bill_floating_white_mode
 font amatic_sc_bold
 font amatic_sc_regular
 font stanford_regular
+mipmap ic_launcher
 string app_name
 style Theme.GravityFalls
