@@ -1,4 +1,4 @@
-# △ Gravity Falls Cipher Encoder
+# △ Gravity Falls Cipher Encoder & Decoder
 
 A **Kotlin + Jetpack Compose** Android app that encodes and decodes the 3 classic ciphers from the TV series *Gravity Falls* (by Alex Hirsch), with aesthetics inspired by [thisisnotawebsitedotcom.com](https://thisisnotawebsitedotcom.com/).
 
