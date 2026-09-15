@@ -3,8 +3,8 @@ package com.gravityfalls.codificador.ui.theme
 import android.content.Context
 
 /**
- * Persistência da preferência de tema via SharedPreferences (sem novas dependências),
- * seguindo o mesmo padrão de HistoryStore.
+ * Persistencia da preferencia de tema via SharedPreferences (sem novas dependencias),
+ * seguindo o mesmo padrao de HistoryStore.
  */
 object ThemeStore {
     private const val PREFS = "gf_theme_prefs"
@@ -27,7 +27,7 @@ object ThemeStore {
                 .putString(KEY, mode.name)
                 .apply()
         } catch (_: Exception) {
-            // Preferência acessória: nunca deve quebrar o app
+            // Preferencia acessoria: nunca deve quebrar o app
         }
     }
 }

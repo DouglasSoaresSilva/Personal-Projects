@@ -21,7 +21,6 @@
         android:extractNativeLibs="false"
         android:label="Codificador Gravity Falls"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.GravityFalls" >
         <activity
             android:name="com.gravityfalls.codificador.MainActivity"

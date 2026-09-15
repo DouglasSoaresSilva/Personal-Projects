@@ -14,10 +14,10 @@ import androidx.compose.ui.unit.dp
 import com.gravityfalls.codificador.ui.theme.BillGold
 
 /**
- * Triângulo do Bill reutilizável.
+ * Triangulo do Bill reutilizavel.
  *
- * @param handDrawn true = traço de caneta investigativa (Diário 3, contorno duplo
- *                  irregular marrom). false = grimório dourado com glow (Livro do Bill).
+ * @param handDrawn true = traco de caneta investigativa (Diario 3, contorno duplo
+ *                  irregular marrom). false = grimorio dourado com glow (Livro do Bill).
  * @param eyeOpen 0f..1f — altura vertical do olho (piscada). 1f = aberto.
  * @param glitchOffset deslocamento horizontal sutil para o glitch do modo Bill.
  */
@@ -46,7 +46,7 @@ fun BillTriangle(
         if (!handDrawn) {
             // glow externo dourado
             drawPath(triPath(0f), gold.copy(alpha = 0.22f))
-            // raios geométricos discretos
+            // raios geometricos discretos
             val cx = w / 2f + ox
             drawLine(
                 gold.copy(alpha = 0.5f),
@@ -65,11 +65,11 @@ fun BillTriangle(
         // corpo
         val body = triPath(if (handDrawn) 7f else 8f)
         drawPath(body, if (handDrawn) Color(0xFFFFFBEB) else gold)
-        // contorno — duplo e trêmulo no modo diário
+        // contorno — duplo e tremulo no modo diario
         drawPath(body, Color.Black, style = Stroke(width = if (handDrawn) 3f else 4f))
         if (handDrawn) {
             drawPath(triPath(10f), ink.copy(alpha = 0.55f), style = Stroke(width = 1.4f))
-            // textura de tijolos / anotação
+            // textura de tijolos / anotacao
             drawLine(
                 ink.copy(alpha = 0.3f),
                 Offset(w * 0.32f, h * 0.46f), Offset(w * 0.68f, h * 0.46f), 1.6f
@@ -81,7 +81,7 @@ fun BillTriangle(
             )
         }
 
-        // olho (altura animável para a piscada)
+        // olho (altura animavel para a piscada)
         val open = eyeOpen.coerceIn(0.12f, 1f)
         val eyeR = w * 0.20f * open
         val eyeCx = w / 2f + ox
@@ -117,7 +117,7 @@ fun BillTriangle(
     }
 }
 
-/** Ícone pequeno para a barra de título / histórico. */
+/** Icone pequeno para a barra de titulo / historico. */
 @Composable
 fun MiniBillIcon(
     modifier: Modifier = Modifier,

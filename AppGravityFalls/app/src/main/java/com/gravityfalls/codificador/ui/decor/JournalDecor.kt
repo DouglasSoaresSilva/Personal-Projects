@@ -31,11 +31,11 @@ import com.gravityfalls.codificador.ui.theme.StampRed
 import com.gravityfalls.codificador.ui.theme.TapeBeige
 
 /**
- * Peças de papelaria do Diário 3 + glifos do Livro do Bill.
- * Tudo aqui é decorativo e barato (Canvas estático, sem animação em loop).
+ * Pecas de papelaria do Diario 3 + glifos do Livro do Bill.
+ * Tudo aqui e decorativo e barato (Canvas estatico, sem animacao em loop).
  */
 
-/** Pedaço de fita adesiva que prende fichas na página. */
+/** Pedaco de fita adesiva que prende fichas na pagina. */
 @Composable
 fun TapePiece(modifier: Modifier = Modifier) {
     Box(
@@ -47,8 +47,8 @@ fun TapePiece(modifier: Modifier = Modifier) {
 }
 
 /**
- * Círculo vermelho desenhado à mão (oval imperfeita, traço duplo).
- * Usado para marcar a seleção no modo Diário.
+ * Circulo vermelho desenhado a mao (oval imperfeita, traco duplo).
+ * Usado para marcar a selecao no modo Diario.
  */
 @Composable
 fun HandCircle(
@@ -60,7 +60,7 @@ fun HandCircle(
         val h = size.height
         // oval principal levemente torta
         drawOval(color, topLeft = Offset(w * 0.04f, h * 0.08f), size = Size(w * 0.92f, h * 0.84f), style = Stroke(width = 3.2f))
-        // segundo traço deslocado (efeito caneta repassada)
+        // segundo traco deslocado (efeito caneta repassada)
         drawOval(
             color.copy(alpha = 0.55f),
             topLeft = Offset(w * 0.07f, h * 0.12f),
@@ -70,7 +70,7 @@ fun HandCircle(
     }
 }
 
-/** Carimbo rotacionado tipo "CONFIDENCIAL / CLASSIFICAÇÃO". */
+/** Carimbo rotacionado tipo "CONFIDENCIAL / CLASSIFICACAO". */
 @Composable
 fun StampText(
     text: String,
@@ -83,15 +83,15 @@ fun StampText(
         color = color.copy(alpha = 0.85f),
         fontFamily = Amatic,
         fontWeight = FontWeight.Bold,
-        fontSize = 13.sp,
+        fontSize = 14.sp,
         letterSpacing = 2.sp,
         textAlign = TextAlign.Center
     )
 }
 
 /**
- * Faixa de rabiscos de margem: pinheiros, olho, interrogação, triângulo.
- * Altura fixa pequena para não roubar atenção do núcleo funcional.
+ * Faixa de rabiscos de margem: pinheiros, olho, interrogacao, triangulo.
+ * Altura fixa pequena para nao roubar atencao do nucleo funcional.
  */
 @Composable
 fun MarginDoodles(
@@ -106,7 +106,7 @@ fun MarginDoodles(
     ) {
         val c = color.copy(alpha = alpha)
         val h = size.height
-        // pinheiro esquerdo (3 triângulos empilhados)
+        // pinheiro esquerdo (3 triangulos empilhados)
         fun pine(cx: Float) {
             val s = h * 0.32f
             for (i in 0..2) {
@@ -126,10 +126,10 @@ fun MarginDoodles(
         val ex = size.width * 0.5f
         drawOval(c, topLeft = Offset(ex - 14f, h * 0.3f), size = Size(28f, 14f), style = Stroke(width = 1.6f))
         drawCircle(c, radius = 3.4f, center = Offset(ex, h * 0.55f))
-        // interrogações laterais
+        // interrogacoes laterais
         drawCircle(c, radius = 1.6f, center = Offset(size.width * 0.3f, h * 0.78f))
         drawCircle(c, radius = 1.6f, center = Offset(size.width * 0.7f, h * 0.78f))
-        // pequenos triângulos
+        // pequenos triangulos
         fun miniTri(cx: Float) {
             val s = 9f
             drawPath(
@@ -144,7 +144,7 @@ fun MarginDoodles(
     }
 }
 
-/** Linha de rodapé manuscrita — frase ambiental, alpha baixo. */
+/** Linha de rodape manuscrita — frase ambiental, alpha baixo. */
 @Composable
 fun FootnoteScribble(
     text: String,
@@ -160,7 +160,7 @@ fun FootnoteScribble(
             text,
             color = color.copy(alpha = 0.55f),
             fontFamily = Amatic,
-            fontSize = 14.sp,
+            fontSize = 15.sp,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center
         )

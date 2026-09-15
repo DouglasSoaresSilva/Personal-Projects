@@ -1,17 +1,17 @@
 package com.gravityfalls.codificador.ciphers
 
 /**
- * Lógica das 3 cifras clássicas de Gravity Falls.
+ * Logica das 3 cifras classicas de Gravity Falls.
  *
- * - César: deslocamento configurável (padrão 3, como na série).
- *   Codificar = +N (A -> D p/ N=3), Descodificar = −N.
+ * - Cesar: deslocamento configuravel (padrao 3, como na serie).
+ *   Codificar = +N (A -> D p/ N=3), Decodificar = -N.
  *   Ex: "WELCOME TO GRAVITY FALLS" <-> "ZHOFRPH WR JUDYLWB IDOOV" (N=3)
- * - Atbash: alfabeto invertido (A <-> Z, B <-> Y...). Simétrica.
+ * - Atbash: alfabeto invertido (A <-> Z, B <-> Y...). Simetrica.
  * - A1Z26: A=1, B=2 ... Z=26.
  */
 
 enum class CipherType(val title: String, val symbol: String) {
-    CAESAR("CIFRA DE CÉSAR", "△"),
+    CAESAR("CIFRA DE CESAR", "△"),
     ATBASH("CIFRA ATBASH", "👁"),
     A1Z26("CIFRA A1Z26", "?")
 }
@@ -35,11 +35,11 @@ fun caesarShiftChar(c: Char, shift: Int): Char {
     return c
 }
 
-/** Codificar César: anda 3 para a FRENTE (WELCOME -> ZHOFRPH) */
+/** Codificar Cesar: anda 3 para a FRENTE (WELCOME -> ZHOFRPH) */
 fun caesarEncode(input: String, shift: Int = CAESAR_SHIFT): String =
     input.map { caesarShiftChar(it, shift) }.joinToString("")
 
-/** Descodificar César: anda 3 para TRÁS (ZHOFRPH -> WELCOME) */
+/** Decodificar Cesar: anda 3 para TRAS (ZHOFRPH -> WELCOME) */
 fun caesarDecode(input: String, shift: Int = CAESAR_SHIFT): String =
     input.map { caesarShiftChar(it, -shift) }.joinToString("")
 
@@ -49,19 +49,19 @@ fun atbashChar(c: Char): Char {
     return c
 }
 
-/** Atbash é simétrica: codificar == descodificar */
+/** Atbash e simetrica: codificar == decodificar */
 fun atbash(input: String): String = input.map(::atbashChar).joinToString("")
 
 /**
  * A1Z26 — Codificar:
- * Cada letra vira o seu número. Letras da mesma palavra separadas por espaço,
+ * Cada letra vira o seu numero. Letras da mesma palavra separadas por espaco,
  * palavras separadas por " / ". Ex: "WELCOME" -> "23 5 12 3 15 13 5"
  */
 fun a1z26Encode(input: String): String {
     val result = StringBuilder()
     val trimmed = input.trim()
     if (trimmed.isEmpty()) return ""
-    // Normaliza espaços múltiplos
+    // Normaliza espacos multiplos
     val words = trimmed.split(Regex("\\s+"))
     words.forEachIndexed { wi, word ->
         if (wi > 0) result.append(" / ")
@@ -73,7 +73,7 @@ fun a1z26Encode(input: String): String {
                 result.append(up.code - 'A'.code + 1)
                 firstLetter = false
             } else {
-                // Mantém pontuação/dígitos como estão, separados por espaço
+                // Mantem pontuacao/digitos como estao, separados por espaco
                 if (!firstLetter) result.append(' ')
                 result.append(c)
                 firstLetter = false
@@ -84,15 +84,15 @@ fun a1z26Encode(input: String): String {
 }
 
 /**
- * A1Z26 — Descodificar:
- * Aceita números 1-26 separados por espaço, vírgula ou hífen.
- * "/" ou " / " vira espaço (separador de palavra).
- * Tokens inválidos são mantidos como "�" com aviso, ou preservados.
+ * A1Z26 — Decodificar:
+ * Aceita numeros 1-26 separados por espaco, virgula ou hifen.
+ * "/" ou " / " vira espaco (separador de palavra).
+ * Tokens invalidos sao mantidos como estao.
  * Ex: "23 5 12 3 15 13 5" -> "WELCOME"
  */
 fun a1z26Decode(input: String): String {
     if (input.isBlank()) return ""
-    // Troca vírgulas e hífens por espaço para tolerância
+    // Troca virgulas e hifens por espaco para tolerancia
     var normalized = input.replace(",", " ").replace("-", " ").trim()
     // Garante que "/" seja um token isolado
     normalized = normalized.replace("/", " / ")
@@ -106,30 +106,30 @@ fun a1z26Decode(input: String): String {
                 if (n in 1..26) out.append(('A'.code + n - 1).toChar())
                 else out.append("[$token?]")
             }
-            // Tolerância: token tipo "23," já tratado; se for letra solta, mantém
+            // Tolerancia: token tipo "23," ja tratado; se for letra solta, mantem
             else -> out.append(token)
         }
     }
     return out.toString()
 }
 
-/** Ponto de entrada único usado pela UI — com deslocamento configurável para César */
+/** Ponto de entrada unico usado pela UI — com deslocamento configuravel para Cesar */
 fun runCipher(type: CipherType, encode: Boolean, input: String, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String {
     val shift = caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT)
     return when (type) {
         CipherType.CAESAR -> if (encode) caesarEncode(input, shift) else caesarDecode(input, shift)
-        CipherType.ATBASH -> atbash(input) // simétrica
+        CipherType.ATBASH -> atbash(input) // simetrica
         CipherType.A1Z26 -> if (encode) a1z26Encode(input) else a1z26Decode(input)
     }
 }
 
 fun cipherDescription(type: CipherType, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String = when (type) {
     CipherType.CAESAR ->
-        "Cada letra é deslocada $caesarShift posições. Codificar anda +$caesarShift, descodificar volta −$caesarShift.\nEx: WELCOME → ${caesarEncode("WELCOME", caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT))}"
+        "Cada letra muda $caesarShift posicoes no alfabeto. Codificar anda +$caesarShift, decodificar volta −$caesarShift.\nEx: WELCOME → ${caesarEncode("WELCOME", caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT))}"
     CipherType.ATBASH ->
-        "Alfabeto totalmente invertido. A vira Z, B vira Y, C vira X…\nCodificar e descodificar são a mesma operação."
+        "Alfabeto totalmente invertido. A vira Z, B vira Y, C vira X…\nCodificar e decodificar fazem a mesma coisa."
     CipherType.A1Z26 ->
-        "Cada letra vira o seu número: A=1, B=2 … Z=26.\nEx: WELCOME → 23 5 12 3 15 13 5  ( / = espaço )"
+        "Cada letra vira o seu numero: A=1, B=2 … Z=26.\nEx: WELCOME → 23 5 12 3 15 13 5  ( / = espaco )"
 }
 
 fun cipherExampleInput(type: CipherType, encode: Boolean, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String = when (type) {

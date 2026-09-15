@@ -41,7 +41,7 @@ private val DarkCrtScheme = darkColorScheme(
     onError = Color.White
 )
 
-// ── Modo claro: Diário do Dipper / pergaminho ──
+// ── Modo claro: Diario do Dipper / pergaminho ──
 // Fundo papel, texto marrom-escuro, destaques em vermelho-journal e dourado-queimado.
 private val LightJournalScheme = lightColorScheme(
     primary = Color(0xFF6D1A1A),
@@ -61,7 +61,7 @@ private val LightJournalScheme = lightColorScheme(
     onError = Color.White
 )
 
-// CrtMono / Stanford / Amatic / JournalSerif moram em Fonts.kt (evita duplicação).
+// CrtMono / Stanford / Amatic / JournalSerif moram em Fonts.kt (evita duplicacao).
 
 // ── Cores extras para o redesign imersivo ──
 val ParchmentDeep = Color(0xFFD9C69A)
@@ -75,9 +75,9 @@ val TapeBeige = Color(0xFFE8DCC0)
 val StampRed = Color(0xFFA31A1A)
 
 // ── Formas: cantos ligeiramente irregulares (papel) / terminal (bill) ──
-/** Ficha de investigação presa na página — cada canto com raio diferente. */
+/** Ficha de investigacao presa na pagina — cada canto com raio diferente. */
 val JournalCardShape = RoundedCornerShape(3.dp, 14.dp, 4.dp, 12.dp)
-/** Campo de diário — quase reto, com leve tremor. */
+/** Campo de diario — quase reto, com leve tremor. */
 val JournalFieldShape = RoundedCornerShape(4.dp, 10.dp, 3.dp, 11.dp)
 /** Terminal ocultista — reto e severo. */
 val BillCardShape = RoundedCornerShape(4.dp)
@@ -86,9 +86,9 @@ val StampShape = RoundedCornerShape(2.dp)
 
 /**
  * Tema com 3 estados:
- * - SYSTEM (padrão): segue o celular via isSystemInDarkTheme()
- * - LIGHT / DARK: forçam o visual, ignorando o sistema.
- * A preferência é persistida em ThemeStore (SharedPreferences).
+ * - SYSTEM (padrao): segue o celular via isSystemInDarkTheme()
+ * - LIGHT / DARK: forcam o visual, ignorando o sistema.
+ * A preferencia e persistida em ThemeStore (SharedPreferences).
  */
 @Composable
 fun GravityFallsTheme(

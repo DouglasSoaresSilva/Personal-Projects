@@ -140,7 +140,7 @@ fun CipherScreen(
         scope.launch { snackbar.showSnackbar("Copiado! O Bill viu isso… 👁") }
     }
 
-    // Glitch sutil do modo Bill — deslocamento de 1px por fração de segundo
+    // Glitch sutil do modo Bill — deslocamento de 1px por fracao de segundo
     val glitchClock = rememberInfiniteTransition(label = "glitch")
     val glitch by glitchClock.animateFloat(
         initialValue = 0f, targetValue = 1f,
@@ -169,7 +169,7 @@ fun CipherScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // ── Barra fina de página: nº de entrada + tema + menu ──
+                // ── Barra fina de pagina: n. de entrada + tema + menu ──
                 JournalToolbar(
                     isDark = isDark,
                     themeMode = themeMode,
@@ -187,7 +187,7 @@ fun CipherScreen(
 
                 Spacer(Modifier.height(8.dp))
 
-                // Slogan — etiqueta costurada na página
+                // Slogan — etiqueta costurada na pagina
                 Box(
                     modifier = Modifier
                         .clip(if (isDark) BillCardShape else StampShape)
@@ -198,21 +198,21 @@ fun CipherScreen(
                     Text(
                         "▲ THIS IS NOT AN APP DOT COM ▲",
                         color = if (isDark) TerminalGreen else BrushRed,
-                        fontFamily = CrtMono, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                        fontFamily = CrtMono, fontSize = 12.sp, fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
                     )
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    if (isDark) "RECORD OF UNKNOWN CODES" else "DIÁRIO Nº 3 // PÁGINA DE CIFRAS",
+                    if (isDark) "RECORD OF UNKNOWN CODES" else "DIARIO N. 3 // PAGINA DE CIFRAS",
                     color = scheme.onBackground.copy(alpha = 0.6f),
-                    fontFamily = HandSmall, fontSize = 15.sp, textAlign = TextAlign.Center
+                    fontFamily = HandSmall, fontSize = 16.sp, textAlign = TextAlign.Center
                 )
                 if (isDark) {
                     Text(
                         "DO NOT TRUST THE TRIANGLE",
                         color = BloodRed.copy(alpha = 0.7f),
-                        fontFamily = HandSmall, fontSize = 13.sp, textAlign = TextAlign.Center
+                        fontFamily = HandSmall, fontSize = 14.sp, textAlign = TextAlign.Center
                     )
                 }
 
@@ -226,7 +226,7 @@ fun CipherScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                // ── Seleção de cifra em 3 fichas (layout mantido) ──
+                // ── Selecao de cifra em 3 fichas (layout mantido) ──
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -235,14 +235,14 @@ fun CipherScreen(
                         "ESCOLHA A CIFRA",
                         fontFamily = if (isDark) Amatic else Stanford,
                         fontWeight = FontWeight.Bold,
-                        fontSize = if (isDark) 17.sp else 15.sp,
+                        fontSize = if (isDark) 18.sp else 16.sp,
                         letterSpacing = 1.sp,
                         color = scheme.onBackground.copy(alpha = 0.8f),
                         modifier = Modifier.weight(1f)
                     )
                     Text(
-                        "CLASSIFICAÇÃO: CONFIDENCIAL",
-                        fontFamily = HandSmall, fontSize = 12.sp,
+                        "CLASSIFICACAO: CONFIDENCIAL",
+                        fontFamily = HandSmall, fontSize = 13.sp,
                         color = scheme.error.copy(alpha = 0.7f)
                     )
                 }
@@ -263,7 +263,7 @@ fun CipherScreen(
                     }
                 }
 
-                // ── Deslocamento do César ──
+                // ── Deslocamento do Cesar ──
                 if (cipher == CipherType.CAESAR) {
                     Spacer(Modifier.height(8.dp))
                     CaesarShiftStepper(
@@ -285,17 +285,17 @@ fun CipherScreen(
                     Text(
                         cipherDescription(cipher, caesarShift),
                         color = scheme.onSurfaceVariant,
-                        fontFamily = CrtMono, fontSize = 12.sp, lineHeight = 17.sp
+                        fontFamily = CrtMono, fontSize = 13.sp, lineHeight = 18.sp
                     )
                 }
 
                 Spacer(Modifier.height(12.dp))
 
-                // ── Entrada (layout mantido: ENTRADA → SAÍDA → botão → 4 ações) ──
+                // ── Entrada (layout mantido: ENTRADA → SAIDA → botao → 4 acoes) ──
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
                     SectionLabel(if (encodeMode) "ENTRADA" else "ENTRADA CIFRADA", isDark)
                     Text(
-                        "${input.length}/$MAX_INPUT", fontFamily = HandSmall, fontSize = 14.sp,
+                        "${input.length}/$MAX_INPUT", fontFamily = HandSmall, fontSize = 15.sp,
                         color = scheme.onBackground.copy(alpha = 0.6f)
                     )
                 }
@@ -318,8 +318,8 @@ fun CipherScreen(
                     shape = if (isDark) BillCardShape else JournalFieldShape,
                     textStyle = LocalTextStyle.current.copy(
                         fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 15.sp else 19.sp,
-                        lineHeight = if (isDark) 22.sp else 24.sp
+                        fontSize = if (isDark) 16.sp else 20.sp,
+                        lineHeight = if (isDark) 23.sp else 25.sp
                     ),
                     placeholder = {
                         Text(
@@ -327,7 +327,7 @@ fun CipherScreen(
                             else "Digite o texto aqui...",
                             color = scheme.onSurface.copy(alpha = 0.45f),
                             fontFamily = if (isDark) CrtMono else HandSmall,
-                            fontSize = if (isDark) 13.sp else 17.sp
+                            fontSize = if (isDark) 14.sp else 18.sp
                         )
                     }
                 )
@@ -335,10 +335,10 @@ fun CipherScreen(
                 Spacer(Modifier.height(8.dp))
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
-                    SectionLabel("SAÍDA", isDark)
+                    SectionLabel("SAIDA", isDark)
                     Text(
                         if (output.isBlank()) "0/500" else "${output.length} chars",
-                        fontFamily = HandSmall, fontSize = 14.sp,
+                        fontFamily = HandSmall, fontSize = 15.sp,
                         color = scheme.onBackground.copy(alpha = 0.55f)
                     )
                 }
@@ -351,7 +351,7 @@ fun CipherScreen(
                         .border(1.dp, scheme.secondary, if (isDark) BillCardShape else JournalFieldShape)
                         .padding(12.dp)
                 ) {
-                    // linhas pautadas sutis no modo diário
+                    // linhas pautadas sutis no modo diario
                     if (!isDark) {
                         Canvas(modifier = Modifier.matchParentSize()) {
                             val step = 26.dp.toPx()
@@ -366,19 +366,19 @@ fun CipherScreen(
                         }
                     }
                     Text(
-                        output.ifBlank { "Resultado aparecerá aqui..." },
+                        output.ifBlank { "Resultado aparecera aqui..." },
                         color = if (output.isBlank()) scheme.onSecondaryContainer.copy(alpha = 0.5f)
                         else scheme.onSecondaryContainer,
                         fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 15.sp else 19.sp,
-                        lineHeight = if (isDark) 22.sp else 24.sp
+                        fontSize = if (isDark) 16.sp else 20.sp,
+                        lineHeight = if (isDark) 23.sp else 25.sp
                     )
                 }
                 if (isDark) {
                     Text(
-                        "DECODIFICAÇÃO ENCONTRADA",
+                        "DECODIFICACAO ENCONTRADA",
                         color = TerminalGreen.copy(alpha = 0.6f),
-                        fontFamily = HandSmall, fontSize = 13.sp,
+                        fontFamily = HandSmall, fontSize = 14.sp,
                         modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
                         textAlign = TextAlign.End
                     )
@@ -386,7 +386,7 @@ fun CipherScreen(
                     Text(
                         "— resultado —",
                         color = scheme.onBackground.copy(alpha = 0.45f),
-                        fontFamily = HandSmall, fontSize = 14.sp,
+                        fontFamily = HandSmall, fontSize = 15.sp,
                         modifier = Modifier.fillMaxWidth().padding(top = 2.dp),
                         textAlign = TextAlign.End
                     )
@@ -394,7 +394,7 @@ fun CipherScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                // ── Botão principal — pincelada / terminal ──
+                // ── Botao principal — pincelada / terminal ──
                 if (isDark) {
                     Button(
                         onClick = {
@@ -416,13 +416,13 @@ fun CipherScreen(
                         Icon(Icons.Filled.PlayArrow, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            if (encodeMode) "CODIFICAR  ▼" else "DESCODIFICAR  ▼",
-                            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 20.sp,
+                            if (encodeMode) "CODIFICAR  ▼" else "DECODIFICAR  ▼",
+                            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 21.sp,
                             letterSpacing = 1.sp
                         )
                     }
                 } else {
-                    // pincelada: bloco vermelho com cantos vivos + leve rotação
+                    // pincelada: bloco vermelho com cantos vivos + leve rotacao
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -438,8 +438,8 @@ fun CipherScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            if (encodeMode) "CODIFICAR  ▼" else "DESCODIFICAR  ▼",
-                            fontFamily = Stanford, fontSize = 19.sp,
+                            if (encodeMode) "CODIFICAR  ▼" else "DECODIFICAR  ▼",
+                            fontFamily = Stanford, fontSize = 20.sp,
                             color = Color.White, letterSpacing = 1.sp
                         )
                     }
@@ -462,7 +462,7 @@ fun CipherScreen(
 
                 Spacer(Modifier.height(14.dp))
 
-                // ── Histórico (resumo + ver tudo) ──
+                // ── Historico (resumo + ver tudo) ──
                 HistorySection(
                     history = history,
                     isDark = isDark,
@@ -471,7 +471,7 @@ fun CipherScreen(
                         encodeMode = entry.encode
                         input = entry.input
                         if (entry.cipher == CipherType.CAESAR) caesarShift = entry.caesarShift
-                        scope.launch { snackbar.showSnackbar("Entrada restaurada do histórico") }
+                        scope.launch { snackbar.showSnackbar("Entrada restaurada do historico") }
                     },
                     onDeleteOne = { id -> persist(history.filterNot { it.id == id }) },
                     onClearAllClick = { showClearAllDialog = true },
@@ -486,9 +486,9 @@ fun CipherScreen(
                 )
                 Spacer(Modifier.height(4.dp))
                 if (isDark) {
-                    FootnoteScribble("THE CIPHER KNOWS — NÃO CONFIE NO TRIÂNGULO", BloodRed)
+                    FootnoteScribble("THE CIPHER KNOWS — NAO CONFIE NO TRIANGULO", BloodRed)
                 } else {
-                    FootnoteScribble("O que você não vê... te vê.", BrushRed)
+                    FootnoteScribble("O que voce nao ve... te ve.", BrushRed)
                 }
                 Spacer(Modifier.height(28.dp))
             }
@@ -507,15 +507,15 @@ fun CipherScreen(
                     "LIMPAR TUDO?",
                     fontFamily = if (isDark) Amatic else Stanford,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 22.sp else 18.sp,
+                    fontSize = if (isDark) 23.sp else 19.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             },
             text = {
                 Text(
-                    "Tem certeza que deseja apagar todo o histórico?",
-                    fontFamily = HandSmall, fontSize = 17.sp,
+                    "Tem certeza que deseja apagar todo o historico?",
+                    fontFamily = HandSmall, fontSize = 18.sp,
                     textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()
                 )
             },
@@ -524,14 +524,14 @@ fun CipherScreen(
                     onClick = { persist(emptyList()); showClearAllDialog = false },
                     colors = ButtonDefaults.buttonColors(containerColor = scheme.error, contentColor = Color.White),
                     shape = if (isDark) BillCardShape else StampShape
-                ) { Text("LIMPAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 18.sp else 14.sp) }
+                ) { Text("LIMPAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 19.sp else 15.sp) }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = { showClearAllDialog = false },
                     shape = if (isDark) BillCardShape else StampShape
                 ) {
-                    Text("CANCELAR", fontFamily = if (isDark) Amatic else Stanford, fontSize = if (isDark) 18.sp else 14.sp)
+                    Text("CANCELAR", fontFamily = if (isDark) Amatic else Stanford, fontSize = if (isDark) 19.sp else 15.sp)
                 }
             }
         )
@@ -542,15 +542,15 @@ fun CipherScreen(
             onDismissRequest = { showFullHistory = false },
             title = {
                 Text(
-                    "▤ HISTÓRICO // ${history.size}",
+                    "▤ HISTORICO // ${history.size}",
                     fontFamily = if (isDark) Amatic else Stanford,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 22.sp else 17.sp
+                    fontSize = if (isDark) 23.sp else 18.sp
                 )
             },
             text = {
                 if (history.isEmpty()) {
-                    Text("Nenhuma conversão ainda…", fontFamily = HandSmall, fontSize = 17.sp)
+                    Text("Nenhuma conversao ainda…", fontFamily = HandSmall, fontSize = 18.sp)
                 } else {
                     LazyColumn(modifier = Modifier.heightIn(max = 420.dp)) {
                         items(history, key = { it.id }) { entry ->
@@ -572,7 +572,7 @@ fun CipherScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showFullHistory = false }) {
-                    Text("FECHAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 19.sp else 15.sp)
+                    Text("FECHAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 20.sp else 16.sp)
                 }
             }
         )
@@ -581,33 +581,33 @@ fun CipherScreen(
     if (showAbout) {
         AlertDialog(
             onDismissRequest = { showAbout = false },
-            title = { Text("Sobre o app", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 24.sp else 19.sp) },
+            title = { Text("Sobre o app", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
             text = {
                 Text(
-                    "Codificador Gravity Falls — as 3 cifras clássicas da série.\n\n• César: deslocamento configurável (padrão +3/−3)\n• Atbash: A↔Z simétrica\n• A1Z26: A=1…Z=26, / = espaço\n\nVisual: Livro do Bill (escuro) / Diário 3 (claro).",
-                    fontFamily = HandSmall, fontSize = 17.sp, lineHeight = 22.sp
+                    "Codificador Gravity Falls — as 3 cifras classicas da serie.\n\n• Cesar: deslocamento configuravel (padrao +3/-3)\n• Atbash: A↔Z simetrica\n• A1Z26: A=1…Z=26, / = espaco\n\nVisual: Livro do Bill (escuro) / Diario 3 (claro).",
+                    fontFamily = HandSmall, fontSize = 18.sp, lineHeight = 23.sp
                 )
             },
-            confirmButton = { TextButton(onClick = { showAbout = false }) { Text("OK", fontFamily = HandSmall, fontSize = 17.sp) } }
+            confirmButton = { TextButton(onClick = { showAbout = false }) { Text("OK", fontFamily = HandSmall, fontSize = 18.sp) } }
         )
     }
 
     if (showHelp) {
         AlertDialog(
             onDismissRequest = { showHelp = false },
-            title = { Text("Ajuda", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 24.sp else 19.sp) },
+            title = { Text("Ajuda", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
             text = {
                 Text(
-                    "1. Escolha CODIFICAR ou DESCODIFICAR.\n2. Escolha a cifra (César, Atbash, A1Z26).\n3. No César, ajuste o deslocamento com − / + (1–25).\n4. Digite — a conversão é automática.\n5. Toque no botão principal para gravar no histórico.\n6. Toque num item do histórico para reutilizar.",
-                    fontFamily = HandSmall, fontSize = 17.sp, lineHeight = 22.sp
+                    "1. Escolha CODIFICAR ou DECODIFICAR.\n2. Escolha a cifra (Cesar, Atbash, A1Z26).\n3. No Cesar, ajuste o deslocamento com - / + (1-25).\n4. Digite e veja o resultado na hora.\n5. Toque no botao principal para gravar no historico.\n6. Toque num item do historico para reutilizar.",
+                    fontFamily = HandSmall, fontSize = 18.sp, lineHeight = 23.sp
                 )
             },
-            confirmButton = { TextButton(onClick = { showHelp = false }) { Text("ENTENDI", fontFamily = HandSmall, fontSize = 17.sp) } }
+            confirmButton = { TextButton(onClick = { showHelp = false }) { Text("ENTENDI", fontFamily = HandSmall, fontSize = 18.sp) } }
         )
     }
 }
 
-// ── Barra fina de página (substitui o TopAppBar Material) ──
+// ── Barra fina de pagina (substitui o TopAppBar Material) ──
 
 @Composable
 fun JournalToolbar(
@@ -629,21 +629,21 @@ fun JournalToolbar(
         Spacer(Modifier.width(8.dp))
         Column(Modifier.weight(1f)) {
             Text(
-                "ENTRADA Nº 003",
-                fontFamily = HandSmall, fontSize = 15.sp,
+                "ENTRADA N. 003",
+                fontFamily = HandSmall, fontSize = 16.sp,
                 color = scheme.onBackground.copy(alpha = 0.65f),
                 letterSpacing = 1.sp
             )
             Text(
-                if (isDark) "CIFRAS DESCONHECIDAS" else "CIFRAS DESCONHECIDAS",
+                "CIFRAS DESCONHECIDAS",
                 fontFamily = if (isDark) Amatic else Stanford,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 16.sp else 13.sp,
+                fontSize = if (isDark) 17.sp else 14.sp,
                 color = if (isDark) TerminalGreen else LeatherBrown,
                 maxLines = 1, overflow = TextOverflow.Ellipsis
             )
         }
-        // ciclo rápido de tema: SISTEMA → ESCURO → CLARO
+        // ciclo rapido de tema: SISTEMA → ESCURO → CLARO
         IconButton(onClick = {
             onThemeModeChange(
                 when (themeMode) {
@@ -668,13 +668,13 @@ fun JournalToolbar(
             IconButton(onClick = { onMenuChange(true) }) {
                 Icon(
                     Icons.Filled.MoreVert,
-                    contentDescription = "Menu / configurações",
+                    contentDescription = "Menu / configuracoes",
                     tint = scheme.onBackground.copy(alpha = 0.75f)
                 )
             }
             DropdownMenu(expanded = showMenu, onDismissRequest = { onMenuChange(false) }) {
                 Text(
-                    "TEMA", fontFamily = HandSmall, fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                    "TEMA", fontFamily = HandSmall, fontSize = 15.sp, fontWeight = FontWeight.Bold,
                     color = scheme.primary, modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                 )
                 ThemeMode.values().forEach { mode ->
@@ -696,7 +696,7 @@ fun JournalToolbar(
                                         ThemeMode.LIGHT -> "Claro"
                                         ThemeMode.DARK -> "Escuro"
                                     },
-                                    fontFamily = HandSmall, fontSize = 16.sp
+                                    fontFamily = HandSmall, fontSize = 17.sp
                                 )
                                 if (mode == themeMode) {
                                     Spacer(Modifier.width(8.dp))
@@ -712,7 +712,7 @@ fun JournalToolbar(
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Filled.Info, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
-                            Text("Sobre o app", fontFamily = HandSmall, fontSize = 16.sp)
+                            Text("Sobre o app", fontFamily = HandSmall, fontSize = 17.sp)
                         }
                     },
                     onClick = { onMenuChange(false); onAbout() }
@@ -721,13 +721,13 @@ fun JournalToolbar(
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Filled.HelpOutline, null, Modifier.size(18.dp)); Spacer(Modifier.width(8.dp))
-                            Text("Ajuda", fontFamily = HandSmall, fontSize = 16.sp)
+                            Text("Ajuda", fontFamily = HandSmall, fontSize = 17.sp)
                         }
                     },
                     onClick = { onMenuChange(false); onHelp() }
                 )
                 DropdownMenuItem(
-                    text = { Text("Sair", fontFamily = HandSmall, fontSize = 16.sp) },
+                    text = { Text("Sair", fontFamily = HandSmall, fontSize = 17.sp) },
                     onClick = { onMenuChange(false); onExit() }
                 )
             }
@@ -759,13 +759,13 @@ fun ThemeSelectorStamps(themeMode: ThemeMode, onChange: (ThemeMode) -> Unit, isD
             Text(
                 "TEMA DO APP",
                 fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 17.sp else 13.sp,
+                fontSize = if (isDark) 18.sp else 14.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
             Spacer(Modifier.weight(1f))
             Text(
                 if (themeMode == ThemeMode.SYSTEM) "segue o sistema" else "fixo — sistema desativado",
-                fontFamily = HandSmall, fontSize = 14.sp, color = scheme.onSurface.copy(alpha = 0.55f)
+                fontFamily = HandSmall, fontSize = 15.sp, color = scheme.onSurface.copy(alpha = 0.55f)
             )
         }
         Spacer(Modifier.height(8.dp))
@@ -796,12 +796,12 @@ fun ThemeChip(text: String, mode: ThemeMode, active: Boolean, mod: Modifier, isD
             color = fg,
             fontFamily = if (isDark) Amatic else Stanford,
             fontWeight = FontWeight.Bold,
-            fontSize = if (isDark) 16.sp else 12.sp
+            fontSize = if (isDark) 17.sp else 13.sp
         )
     }
 }
 
-// ── Histórico ──
+// ── Historico ──
 
 @Composable
 fun HistorySection(
@@ -822,9 +822,9 @@ fun HistorySection(
             Icon(Icons.Filled.History, null, tint = scheme.primary, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(6.dp))
             Text(
-                "HISTÓRICO",
+                "HISTORICO",
                 fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 19.sp else 14.sp,
+                fontSize = if (isDark) 20.sp else 15.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
         }
@@ -833,13 +833,13 @@ fun HistorySection(
                 TextButton(onClick = onClearAllClick) {
                     Text(
                         "limpar tudo ⌫",
-                        fontFamily = HandSmall, fontSize = 15.sp,
+                        fontFamily = HandSmall, fontSize = 16.sp,
                         fontWeight = FontWeight.Bold, color = scheme.error
                     )
                 }
             }
             TextButton(onClick = onSeeAll) {
-                Text("Ver tudo >", fontFamily = HandSmall, fontSize = 15.sp, color = scheme.primary)
+                Text("Ver tudo >", fontFamily = HandSmall, fontSize = 16.sp, color = scheme.primary)
             }
         }
     }
@@ -853,9 +853,9 @@ fun HistorySection(
                 .padding(12.dp)
         ) {
             Text(
-                "Nenhuma conversão ainda…\nToque em CODIFICAR / DESCODIFICAR para gravar aqui.",
+                "Nenhuma conversao ainda…\nToque em CODIFICAR / DECODIFICAR para gravar aqui.",
                 color = scheme.onSurface.copy(alpha = 0.55f),
-                fontFamily = HandSmall, fontSize = 16.sp, lineHeight = 21.sp
+                fontFamily = HandSmall, fontSize = 17.sp, lineHeight = 22.sp
             )
         }
     } else {
@@ -893,19 +893,19 @@ fun HistoryCard(entry: HistoryEntry, index: Int = 0, isDark: Boolean = false, on
                     "REG #${(index + 1).toString().padStart(3, '0')} • ${entry.cipherLabel} • ${entry.modeLabel}",
                     color = scheme.primary,
                     fontFamily = HandSmall,
-                    fontWeight = FontWeight.Bold, fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold, fontSize = 15.sp,
                     maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f)
                 )
-                Text(dateStr, color = scheme.onSurface.copy(alpha = 0.5f), fontFamily = HandSmall, fontSize = 14.sp)
+                Text(dateStr, color = scheme.onSurface.copy(alpha = 0.5f), fontFamily = HandSmall, fontSize = 15.sp)
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
-                    Icon(Icons.Filled.Delete, contentDescription = "Apagar esta conversão", tint = scheme.error, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Filled.Delete, contentDescription = "Apagar esta conversao", tint = scheme.error, modifier = Modifier.size(18.dp))
                 }
             }
-            Text("IN: ${entry.input}", color = scheme.onSurface, fontFamily = CrtMono, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Text("OUT: ${entry.output}", color = scheme.secondary, fontFamily = CrtMono, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text("IN: ${entry.input}", color = scheme.onSurface, fontFamily = CrtMono, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text("OUT: ${entry.output}", color = scheme.secondary, fontFamily = CrtMono, fontSize = 13.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Text(
                 if (isDark) "▤ toque para reutilizar" else "✎ toque para reutilizar",
-                color = scheme.onSurface.copy(alpha = 0.4f), fontFamily = HandSmall, fontSize = 13.sp
+                color = scheme.onSurface.copy(alpha = 0.4f), fontFamily = HandSmall, fontSize = 14.sp
             )
         }
     }
@@ -921,7 +921,7 @@ fun BillHeader(isDark: Boolean, glitchOffset: Float = 0f) {
         initialValue = 0f, targetValue = 1f,
         animationSpec = infiniteRepeatable(tween(4000), RepeatMode.Restart), label = "eye"
     )
-    // olho fecha por uma fração do ciclo
+    // olho fecha por uma fracao do ciclo
     val eyeOpen = if (eyePhase > 0.94f) 0.15f else 1f
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(contentAlignment = Alignment.TopCenter) {
@@ -957,7 +957,7 @@ fun BillHeader(isDark: Boolean, glitchOffset: Float = 0f) {
             Text(
                 "gravity falls",
                 color = LeatherBrown.copy(alpha = 0.7f),
-                fontFamily = HandSmall, fontSize = 18.sp,
+                fontFamily = HandSmall, fontSize = 19.sp,
                 textAlign = TextAlign.Center
             )
         }
@@ -980,10 +980,10 @@ fun ModeSwitch(encode: Boolean, isDark: Boolean, onChange: (Boolean) -> Unit) {
         ) {
             val mod = Modifier.weight(1f).height(46.dp)
             ModeButtonTerminal("◉ CODIFICAR", encode, mod) { onChange(true) }
-            ModeButtonTerminal("◎ DESCODIFICAR", !encode, mod) { onChange(false) }
+            ModeButtonTerminal("◎ DECODIFICAR", !encode, mod) { onChange(false) }
         }
     } else {
-        // Duas etiquetas manuscritas; seleção = círculo de caneta vermelha
+        // Duas etiquetas manuscritas; selecao = circulo de caneta vermelha
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -995,7 +995,7 @@ fun ModeSwitch(encode: Boolean, isDark: Boolean, onChange: (Boolean) -> Unit) {
         ) {
             val mod = Modifier.weight(1f).height(46.dp)
             ModeButtonJournal("CODIFICAR", encode, mod) { onChange(true) }
-            ModeButtonJournal("DESCODIFICAR", !encode, mod) { onChange(false) }
+            ModeButtonJournal("DECODIFICAR", !encode, mod) { onChange(false) }
         }
     }
 }
@@ -1022,7 +1022,7 @@ fun ModeButtonTerminal(text: String, active: Boolean, mod: Modifier, onClick: ()
             Text(
                 text,
                 color = if (active) BillGold else BloodRed.copy(alpha = 0.75f),
-                fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 17.sp
+                fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 18.sp
             )
         }
     }
@@ -1030,7 +1030,6 @@ fun ModeButtonTerminal(text: String, active: Boolean, mod: Modifier, onClick: ()
 
 @Composable
 fun ModeButtonJournal(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit) {
-    val scheme = MaterialTheme.colorScheme
     Box(
         modifier = mod
             .clip(StampShape)
@@ -1039,20 +1038,16 @@ fun ModeButtonJournal(text: String, active: Boolean, mod: Modifier, onClick: () 
         contentAlignment = Alignment.Center
     ) {
         if (!active) {
-            // etiqueta inativa: só texto carimbado
+            // etiqueta inativa: so texto carimbado
             Text(
                 text, color = BrushRed.copy(alpha = 0.8f),
-                fontFamily = Stanford, fontSize = 15.sp
+                fontFamily = Stanford, fontSize = 16.sp
             )
         } else {
             Text(
                 text, color = Color.White,
-                fontFamily = Stanford, fontSize = 15.sp
+                fontFamily = Stanford, fontSize = 16.sp
             )
-        }
-        if (active) {
-            // círculo de caneta ao redor da etiqueta ativa — feito com borda dupla fina
-            // (HandCircle completo ficaria pesado aqui; o fill + borda já lê como selo)
         }
     }
 }
@@ -1071,7 +1066,7 @@ fun ModeButton(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit
     ) {
         Text(
             text, color = if (active) Color.White else scheme.error,
-            fontFamily = Stanford, fontSize = 14.sp
+            fontFamily = Stanford, fontSize = 15.sp
         )
     }
 }
@@ -1093,7 +1088,7 @@ fun CipherGridCard(
         CipherType.A1Z26 -> "?" to "A=1…Z=26"
     }
     val title = when (type) {
-        CipherType.CAESAR -> "CÉSAR"
+        CipherType.CAESAR -> "CESAR"
         CipherType.ATBASH -> "ATBASH"
         CipherType.A1Z26 -> "A1Z26"
     }
@@ -1118,11 +1113,11 @@ fun CipherGridCard(
             .clickable(onClick = onClick)
             .padding(top = 12.dp, bottom = 10.dp, start = 8.dp, end = 8.dp)
     ) {
-        // fita adesiva no modo diário
+        // fita adesiva no modo diario
         if (!isDark) {
             TapePiece(modifier = Modifier.align(Alignment.TopCenter).offset(y = (-16).dp))
         }
-        // brilho de seleção no modo bill
+        // brilho de selecao no modo bill
         if (isDark && selected) {
             Box(
                 modifier = Modifier.matchParentSize()
@@ -1143,7 +1138,7 @@ fun CipherGridCard(
                     Text(
                         if (selected) "●" else "○",
                         color = if (selected) BrushRed else scheme.onSurface.copy(alpha = 0.4f),
-                        fontSize = 9.sp, fontFamily = HandSmall
+                        fontSize = 10.sp, fontFamily = HandSmall
                     )
                     Spacer(Modifier.width(4.dp))
                 }
@@ -1164,21 +1159,21 @@ fun CipherGridCard(
                 color = if (selected && isDark) BillGold else if (selected) BrushRed else scheme.onSurface,
                 fontFamily = if (isDark) Amatic else Stanford,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 18.sp else 15.sp,
+                fontSize = if (isDark) 19.sp else 16.sp,
                 textAlign = TextAlign.Center
             )
             Text(
                 sub,
                 color = scheme.onSurface.copy(alpha = 0.6f),
-                fontFamily = HandSmall, fontSize = 14.sp, textAlign = TextAlign.Center
+                fontFamily = HandSmall, fontSize = 15.sp, textAlign = TextAlign.Center
             )
             Text(
                 detail,
                 color = (if (isDark) TerminalGreen else GoldDim).copy(alpha = 0.9f),
-                fontFamily = CrtMono, fontSize = 10.sp, textAlign = TextAlign.Center
+                fontFamily = CrtMono, fontSize = 11.sp, textAlign = TextAlign.Center
             )
         }
-        // círculo de caneta marcando a ficha ativa no diário
+        // circulo de caneta marcando a ficha ativa no diario
         if (selected && !isDark) {
             HandCircle(
                 modifier = Modifier.matchParentSize().padding(2.dp),
@@ -1203,18 +1198,18 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
     ) {
         Column(Modifier.weight(1f)) {
             Text(
-                "DESLOCAMENTO DE CÉSAR",
+                "DESLOCAMENTO DE CESAR",
                 fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 17.sp else 13.sp,
+                fontSize = if (isDark) 18.sp else 14.sp,
                 fontWeight = FontWeight.Bold, color = scheme.primary
             )
             Text(
-                "Codifica +$shift • Descodifica −$shift  (1–25)",
-                fontFamily = HandSmall, fontSize = 14.sp, color = scheme.onSurface.copy(alpha = 0.7f)
+                "Codifica +$shift • Decodifica −$shift  (1–25)",
+                fontFamily = HandSmall, fontSize = 15.sp, color = scheme.onSurface.copy(alpha = 0.7f)
             )
             Text(
                 "WELCOME → ${caesarEncode("WELCOME", shift)}",
-                fontFamily = CrtMono, fontSize = 11.sp, color = scheme.secondary, fontWeight = FontWeight.Bold
+                fontFamily = CrtMono, fontSize = 12.sp, color = scheme.secondary, fontWeight = FontWeight.Bold
             )
         }
         IconButton(
@@ -1228,7 +1223,7 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("$shift", color = Color.White, fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 20.sp else 16.sp)
+            Text("$shift", color = Color.White, fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 21.sp else 17.sp)
         }
         IconButton(
             onClick = { onChange(shift + 1) }, enabled = shift < CAESAR_MAX_SHIFT,
@@ -1242,7 +1237,7 @@ fun SectionLabel(text: String, isDark: Boolean) {
     Text(
         text, color = MaterialTheme.colorScheme.primary,
         fontFamily = if (isDark) Amatic else Stanford,
-        fontSize = if (isDark) 19.sp else 15.sp,
+        fontSize = if (isDark) 20.sp else 16.sp,
         fontWeight = FontWeight.Bold,
         letterSpacing = 1.sp,
         modifier = Modifier.padding(bottom = 6.dp, top = 4.dp)
@@ -1272,7 +1267,7 @@ fun QuickButton(
                 text,
                 fontFamily = if (isDark) Amatic else Stanford,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 15.sp else 11.sp,
+                fontSize = if (isDark) 16.sp else 12.sp,
                 maxLines = 1
             )
         }

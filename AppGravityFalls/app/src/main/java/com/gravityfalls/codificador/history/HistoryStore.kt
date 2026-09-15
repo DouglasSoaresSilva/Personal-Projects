@@ -6,7 +6,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * Uma conversão guardada no histórico.
+ * Uma conversao guardada no historico.
  */
 data class HistoryEntry(
     val id: Long = System.currentTimeMillis(),
@@ -17,17 +17,17 @@ data class HistoryEntry(
     val timestamp: Long = System.currentTimeMillis(),
     val caesarShift: Int = 3
 ) {
-    val modeLabel: String get() = if (encode) "CODIFICAR" else "DESCODIFICAR"
+    val modeLabel: String get() = if (encode) "CODIFICAR" else "DECODIFICAR"
     val cipherLabel: String get() = when (cipher) {
-        CipherType.CAESAR -> "César (+$caesarShift)"
+        CipherType.CAESAR -> "Cesar (+$caesarShift)"
         CipherType.ATBASH -> "Atbash"
         CipherType.A1Z26 -> "A1Z26"
     }
 }
 
 /**
- * Persistência simples via SharedPreferences + org.json (sem novas dependências).
- * Guarda no máximo [MAX_ENTRIES] itens (os mais recentes primeiro).
+ * Persistencia simples via SharedPreferences + org.json (sem novas dependencias).
+ * Guarda no maximo [MAX_ENTRIES] itens (os mais recentes primeiro).
  */
 object HistoryStore {
     private const val PREFS = "gf_history_prefs"
@@ -83,7 +83,7 @@ object HistoryStore {
                 .putString(KEY, arr.toString())
                 .apply()
         } catch (_: Exception) {
-            // Histórico é acessório: nunca deve quebrar o app
+            // Historico e acessorio: nunca deve quebrar o app
         }
     }
 }
