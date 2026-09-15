@@ -14,9 +14,15 @@ data class HistoryEntry(
     val encode: Boolean,
     val input: String,
     val output: String,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val caesarShift: Int = 3
 ) {
     val modeLabel: String get() = if (encode) "CODIFICAR" else "DESCODIFICAR"
+    val cipherLabel: String get() = when (cipher) {
+        CipherType.CAESAR -> "César (+$caesarShift)"
+        CipherType.ATBASH -> "Atbash"
+        CipherType.A1Z26 -> "A1Z26"
+    }
 }
 
 /**
@@ -46,7 +52,8 @@ object HistoryStore {
                             encode = o.optBoolean("encode", true),
                             input = o.optString("input", ""),
                             output = o.optString("output", ""),
-                            timestamp = o.optLong("ts", System.currentTimeMillis())
+                            timestamp = o.optLong("ts", System.currentTimeMillis()),
+                            caesarShift = o.optInt("shift", 3).coerceIn(1, 25)
                         )
                     )
                 }
@@ -68,6 +75,7 @@ object HistoryStore {
                         .put("input", e.input)
                         .put("output", e.output)
                         .put("ts", e.timestamp)
+                        .put("shift", e.caesarShift)
                 )
             }
             context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)

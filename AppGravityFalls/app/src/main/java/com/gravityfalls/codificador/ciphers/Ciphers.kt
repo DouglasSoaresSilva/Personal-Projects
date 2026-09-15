@@ -3,9 +3,9 @@ package com.gravityfalls.codificador.ciphers
 /**
  * Lógica das 3 cifras clássicas de Gravity Falls.
  *
- * - César: deslocamento fixo de 3 (como na série).
- *   Codificar = +3 (A -> D), Descodificar = -3 (D -> A).
- *   Ex: "WELCOME TO GRAVITY FALLS" <-> "ZHOFRPH WR JUDYLWB IDOOV"
+ * - César: deslocamento configurável (padrão 3, como na série).
+ *   Codificar = +N (A -> D p/ N=3), Descodificar = −N.
+ *   Ex: "WELCOME TO GRAVITY FALLS" <-> "ZHOFRPH WR JUDYLWB IDOOV" (N=3)
  * - Atbash: alfabeto invertido (A <-> Z, B <-> Y...). Simétrica.
  * - A1Z26: A=1, B=2 ... Z=26.
  */
@@ -17,6 +17,11 @@ enum class CipherType(val title: String, val symbol: String) {
 }
 
 private const val CAESAR_SHIFT = 3
+const val CAESAR_DEFAULT_SHIFT = 3
+const val CAESAR_MIN_SHIFT = 1
+const val CAESAR_MAX_SHIFT = 25
+
+fun caesarLabel(shift: Int): String = "(+$shift / −$shift)"
 
 fun caesarShiftChar(c: Char, shift: Int): Char {
     if (c in 'A'..'Z') {
@@ -108,26 +113,28 @@ fun a1z26Decode(input: String): String {
     return out.toString()
 }
 
-/** Ponto de entrada único usado pela UI */
-fun runCipher(type: CipherType, encode: Boolean, input: String): String {
+/** Ponto de entrada único usado pela UI — com deslocamento configurável para César */
+fun runCipher(type: CipherType, encode: Boolean, input: String, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String {
+    val shift = caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT)
     return when (type) {
-        CipherType.CAESAR -> if (encode) caesarEncode(input) else caesarDecode(input)
+        CipherType.CAESAR -> if (encode) caesarEncode(input, shift) else caesarDecode(input, shift)
         CipherType.ATBASH -> atbash(input) // simétrica
         CipherType.A1Z26 -> if (encode) a1z26Encode(input) else a1z26Decode(input)
     }
 }
 
-fun cipherDescription(type: CipherType): String = when (type) {
+fun cipherDescription(type: CipherType, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String = when (type) {
     CipherType.CAESAR ->
-        "Cada letra é deslocada 3 posições. D vira A, E vira B…\nEx: ZHOFRPH WR JUDYLWB IDOOV → WELCOME TO GRAVITY FALLS"
+        "Cada letra é deslocada $caesarShift posições. Codificar anda +$caesarShift, descodificar volta −$caesarShift.\nEx: WELCOME → ${caesarEncode("WELCOME", caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT))}"
     CipherType.ATBASH ->
         "Alfabeto totalmente invertido. A vira Z, B vira Y, C vira X…\nCodificar e descodificar são a mesma operação."
     CipherType.A1Z26 ->
         "Cada letra vira o seu número: A=1, B=2 … Z=26.\nEx: WELCOME → 23 5 12 3 15 13 5  ( / = espaço )"
 }
 
-fun cipherExampleInput(type: CipherType, encode: Boolean): String = when (type) {
-    CipherType.CAESAR -> if (encode) "WELCOME TO GRAVITY FALLS" else "ZHOFRPH WR JUDYLWB IDOOV"
+fun cipherExampleInput(type: CipherType, encode: Boolean, caesarShift: Int = CAESAR_DEFAULT_SHIFT): String = when (type) {
+    CipherType.CAESAR -> if (encode) "WELCOME TO GRAVITY FALLS"
+    else caesarEncode("WELCOME TO GRAVITY FALLS", caesarShift.coerceIn(CAESAR_MIN_SHIFT, CAESAR_MAX_SHIFT))
     CipherType.ATBASH -> if (encode) "WELCOME TO GRAVITY FALLS" else "DVOXLNV GL TIZERMGB UZOOQ"
     CipherType.A1Z26 -> if (encode) "WELCOME TO GRAVITY FALLS"
     else "23 5 12 3 15 13 5 / 20 15 / 7 18 1 22 9 20 25 / 6 1 12 12 19"

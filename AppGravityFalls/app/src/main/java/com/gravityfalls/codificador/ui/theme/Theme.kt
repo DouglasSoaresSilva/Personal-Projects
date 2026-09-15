@@ -61,16 +61,34 @@ private val LightJournalScheme = lightColorScheme(
 )
 
 val CrtMono = FontFamily.Monospace
+val JournalSerif = FontFamily.Serif
+
+// ── Cores extras para o redesign imersivo ──
+val ParchmentDeep = Color(0xFFD9C69A)
+val LeatherBrown = Color(0xFF4E342E)
+val BrushRed = Color(0xFFA31A1A)
+val CardDarkElev = Color(0xFF0E150E)
+val GoldDim = Color(0xFF8C7300)
 
 /**
- * Segue AUTOMATICAMENTE o tema do celular:
- * - celular em modo escuro -> terminal CRT preto/verde
- * - celular em modo claro  -> diário pergaminho
- * Sem nenhuma opção manual, conforme pedido.
+ * Tema com 3 estados:
+ * - SYSTEM (padrão): segue o celular via isSystemInDarkTheme()
+ * - LIGHT / DARK: forçam o visual, ignorando o sistema.
+ * A preferência é persistida em ThemeStore (SharedPreferences).
  */
 @Composable
 fun GravityFallsTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    mode: ThemeMode = ThemeMode.SYSTEM,
+    systemDark: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val dark = mode.resolveDark(systemDark)
+    GravityFallsTheme(darkTheme = dark, content = content)
+}
+
+@Composable
+fun GravityFallsTheme(
+    darkTheme: Boolean,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
