@@ -85,7 +85,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Pichau\.gradle\cac
 	android:supportsRtl
 		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:9:9-35
 	android:label
-		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:8:9-50
+		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:8:9-33
 	android:roundIcon
 		ADDED from C:\Users\Pichau\Documents\GitHub\Personal-Projects\AppGravityFalls\app\src\main\AndroidManifest.xml:7:9-48
 	android:icon
