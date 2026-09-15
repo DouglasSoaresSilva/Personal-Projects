@@ -75,4 +75,4 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 - A1Z26 codificar: `WELCOME` → `23 5 12 3 15 13 5`
 - A1Z26 descodificar: `23 5 12 3 15 13 5 / 20 15 / 7 18 1 22 9 20 25 / 6 1 12 12 19` → `WELCOME TO GRAVITY FALLS`
 
-> ⚠ NÃO CONFIE NO TRIÂNGULO. Realidade é uma ilusão, o universo é um holograma.
+> ⚠ NÃO CONFIE NO TRIÂNGULO. A realidade é uma ilusão, o universo é um holograma, compre ouro, adeus!
