@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.gravityfalls.codificador.ui.CipherScreen
+import com.gravityfalls.codificador.ui.AppHome
 import com.gravityfalls.codificador.ui.theme.GravityFallsTheme
 import com.gravityfalls.codificador.ui.theme.ThemeMode
 import com.gravityfalls.codificador.ui.theme.ThemeStore
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CipherScreen(
+                    AppHome(
                         themeMode = themeMode,
                         onThemeModeChange = { newMode ->
                             themeMode = newMode

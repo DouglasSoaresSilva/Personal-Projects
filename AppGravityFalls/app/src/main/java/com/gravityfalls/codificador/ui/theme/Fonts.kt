@@ -29,6 +29,27 @@ val Amatic = FontFamily(
 val CrtMono = FontFamily.Monospace
 val JournalSerif = FontFamily.Serif
 
+/**
+ * Alfabetos visuais de Gravity Falls (apenas aparencia, sem cifra).
+ * O texto interno continua normal (A-Z); a fonte troca os glifos.
+ * Arquivos em res/font; fallback automatico se um .ttf falhar.
+ */
+val CipherFontA = FontFamily(
+    Font(R.font.cipher_font_a, FontWeight.Normal)
+)
+
+val CipherFontB = FontFamily(
+    Font(R.font.cipher_font_b, FontWeight.Normal)
+)
+
+val StrangeRunes = FontFamily(
+    Font(R.font.strange_runes, FontWeight.Normal)
+)
+
+val Theraprism = FontFamily(
+    Font(R.font.theraprism, FontWeight.Normal)
+)
+
 /** Titulo grande estilo diario (modo claro). */
 val JournalTitle: FontFamily get() = Stanford
 
