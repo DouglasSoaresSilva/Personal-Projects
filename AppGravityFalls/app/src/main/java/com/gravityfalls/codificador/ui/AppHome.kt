@@ -3,7 +3,6 @@ package com.gravityfalls.codificador.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +22,8 @@ import com.gravityfalls.codificador.ui.theme.*
  * Os alfabetos nao sao cifras (so trocam a aparencia via fonte), por isso
  * vivem numa aba separada, com historico e logica proprios.
  * O tema (Diario 3 / Livro do Bill) e compartilhado entre as abas.
+ * A chave CIFRAS/ALFABETOS fica logo abaixo do seletor de tema, dentro de
+ * cada tela (mesma posicao nas duas).
  */
 enum class HomeTab { CIPHER, ALPHABET }
 
@@ -31,41 +32,40 @@ fun AppHome(
     themeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit
 ) {
-    val systemDark = isSystemInDarkTheme()
-    val isDark = themeMode.resolveDark(systemDark)
     var tab by remember { mutableStateOf(HomeTab.CIPHER) }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        HomeTabBar(selected = tab, isDark = isDark, onSelect = { tab = it })
-        Box(modifier = Modifier.weight(1f)) {
-            when (tab) {
-                HomeTab.CIPHER -> CipherScreen(
-                    themeMode = themeMode,
-                    onThemeModeChange = onThemeModeChange
-                )
-                HomeTab.ALPHABET -> AlphabetScreen(
-                    themeMode = themeMode,
-                    onThemeModeChange = onThemeModeChange
-                )
-            }
+        when (tab) {
+            HomeTab.CIPHER -> CipherScreen(
+                themeMode = themeMode,
+                onThemeModeChange = onThemeModeChange,
+                homeTab = tab,
+                onHomeTabChange = { tab = it }
+            )
+            HomeTab.ALPHABET -> AlphabetScreen(
+                themeMode = themeMode,
+                onThemeModeChange = onThemeModeChange,
+                homeTab = tab,
+                onHomeTabChange = { tab = it }
+            )
         }
     }
 }
 
+/**
+ * Chave CIFRAS/ALFABETOS. Usada dentro das telas, logo abaixo do seletor
+ * de tema — a coluna rolavel das telas ja da o padding horizontal.
+ */
 @Composable
 fun HomeTabBar(selected: HomeTab, isDark: Boolean, onSelect: (HomeTab) -> Unit) {
-    val scheme = MaterialTheme.colorScheme
     if (isDark) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black)
-                .statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(BillCardShape)
                 .background(Color(0xFF0A0F0A))
                 .border(1.dp, BloodRed, BillCardShape)
@@ -80,9 +80,6 @@ fun HomeTabBar(selected: HomeTab, isDark: Boolean, onSelect: (HomeTab) -> Unit) 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFF3EAD3))
-                .statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
                 .clip(JournalCardShape)
                 .background(Color(0xFFFFFBEB))
                 .border(1.dp, PencilGray, JournalCardShape)

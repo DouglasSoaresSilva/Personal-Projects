@@ -87,7 +87,9 @@ private val AZ_LETTERS = ('A'..'Z').toList()
 @Composable
 fun AlphabetScreen(
     themeMode: ThemeMode,
-    onThemeModeChange: (ThemeMode) -> Unit
+    onThemeModeChange: (ThemeMode) -> Unit,
+    homeTab: HomeTab = HomeTab.ALPHABET,
+    onHomeTabChange: (HomeTab) -> Unit = {}
 ) {
     val systemDark = isSystemInDarkTheme()
     val isDark = themeMode.resolveDark(systemDark)
@@ -200,6 +202,10 @@ fun AlphabetScreen(
                 Spacer(Modifier.height(10.dp))
 
                 ThemeSelectorStamps(themeMode = themeMode, onChange = onThemeModeChange, isDark = isDark)
+
+                Spacer(Modifier.height(10.dp))
+
+                HomeTabBar(selected = homeTab, isDark = isDark, onSelect = onHomeTabChange)
 
                 Spacer(Modifier.height(10.dp))
 

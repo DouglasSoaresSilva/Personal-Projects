@@ -84,7 +84,9 @@ private const val MAX_INPUT = 500
 @Composable
 fun CipherScreen(
     themeMode: ThemeMode,
-    onThemeModeChange: (ThemeMode) -> Unit
+    onThemeModeChange: (ThemeMode) -> Unit,
+    homeTab: HomeTab = HomeTab.CIPHER,
+    onHomeTabChange: (HomeTab) -> Unit = {}
 ) {
     val systemDark = isSystemInDarkTheme()
     val isDark = themeMode.resolveDark(systemDark)
@@ -214,6 +216,10 @@ fun CipherScreen(
                 Spacer(Modifier.height(10.dp))
 
                 ThemeSelectorStamps(themeMode = themeMode, onChange = onThemeModeChange, isDark = isDark)
+
+                Spacer(Modifier.height(10.dp))
+
+                HomeTabBar(selected = homeTab, isDark = isDark, onSelect = onHomeTabChange)
 
                 Spacer(Modifier.height(10.dp))
 
