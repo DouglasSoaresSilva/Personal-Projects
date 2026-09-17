@@ -1,62 +1,58 @@
 [
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\mipmap-mdpi\\ic_launcher.png"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_amatic_sc_bold.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/amatic_sc_bold.ttf"
     },
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\mipmap-xxhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\font_stanford_regular.ttf.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\font\\stanford_regular.ttf"
-    },
-    {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\drawable-nodpi_bill_floating_white_mode.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\drawable-nodpi\\bill_floating_white_mode.png"
-    },
-    {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\font_amatic_sc_bold.ttf.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\font\\amatic_sc_bold.ttf"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_cipher_font_b.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/cipher_font_b.ttf"
     },
     {
         "merged": "com.gravityfalls.codificador.app-debug-47:/mipmap-xhdpi_ic_launcher.png.flat",
         "source": "com.gravityfalls.codificador.app-main-49:/mipmap-xhdpi/ic_launcher.png"
     },
     {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/drawable-nodpi_bill_floating_dark_mode.png.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/drawable-nodpi/bill_floating_dark_mode.png"
+    },
+    {
         "merged": "com.gravityfalls.codificador.app-debug-47:/mipmap-mdpi_ic_launcher.png.flat",
         "source": "com.gravityfalls.codificador.app-main-49:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\drawable-nodpi_bill_floating_dark_mode.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\drawable-nodpi\\bill_floating_dark_mode.png"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_theraprism.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/theraprism.ttf"
     },
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_cipher_font_a.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/cipher_font_a.ttf"
+    },
+    {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_stanford_regular.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/stanford_regular.ttf"
     },
     {
         "merged": "com.gravityfalls.codificador.app-debug-47:/mipmap-hdpi_ic_launcher.png.flat",
         "source": "com.gravityfalls.codificador.app-main-49:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\mipmap-xxxhdpi\\ic_launcher.png"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_strange_runes.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/strange_runes.ttf"
     },
     {
         "merged": "com.gravityfalls.codificador.app-debug-47:/mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "com.gravityfalls.codificador.app-main-49:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
+        "merged": "com.gravityfalls.codificador.app-debug-47:/drawable-nodpi_bill_floating_white_mode.png.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/drawable-nodpi/bill_floating_white_mode.png"
+    },
+    {
         "merged": "com.gravityfalls.codificador.app-debug-47:/mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "com.gravityfalls.codificador.app-main-49:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-debug-47:\\font_amatic_sc_regular.ttf.flat",
-        "source": "C:\\Users\\Pichau\\.gradle\\daemon\\8.7\\com.gravityfalls.codificador.app-main-49:\\font\\amatic_sc_regular.ttf"
+        "merged": "com.gravityfalls.codificador.app-debug-47:/font_amatic_sc_regular.ttf.flat",
+        "source": "com.gravityfalls.codificador.app-main-49:/font/amatic_sc_regular.ttf"
     }
 ]

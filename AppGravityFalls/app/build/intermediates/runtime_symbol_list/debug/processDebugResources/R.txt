@@ -68,7 +68,11 @@ int drawable notification_tile_bg 0x7f040013
 int drawable notify_panel_notification_icon_bg 0x7f040014
 int font amatic_sc_bold 0x7f050000
 int font amatic_sc_regular 0x7f050001
-int font stanford_regular 0x7f050002
+int font cipher_font_a 0x7f050002
+int font cipher_font_b 0x7f050003
+int font stanford_regular 0x7f050004
+int font strange_runes 0x7f050005
+int font theraprism 0x7f050006
 int id accessibility_action_clickable_span 0x7f060000
 int id accessibility_custom_action_0 0x7f060001
 int id accessibility_custom_action_1 0x7f060002
