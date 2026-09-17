@@ -221,9 +221,9 @@ fun AlphabetScreen(
                 ) {
                     Text(
                         "ESCOLHA O ALFABETO",
-                        fontFamily = if (isDark) Amatic else Stanford,
+                        fontFamily = Amatic,
                         fontWeight = FontWeight.Bold,
-                        fontSize = if (isDark) 19.sp else 17.sp,
+                        fontSize = 19.sp,
                         letterSpacing = 1.sp,
                         color = scheme.onBackground.copy(alpha = 0.8f),
                         modifier = Modifier.weight(1f)
@@ -320,9 +320,9 @@ fun AlphabetScreen(
                     ),
                     shape = if (isDark) BillCardShape else JournalFieldShape,
                     textStyle = LocalTextStyle.current.copy(
-                        fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 16.sp else 20.sp,
-                        lineHeight = if (isDark) 23.sp else 25.sp
+                        fontFamily = CrtMono,
+                        fontSize = 16.sp,
+                        lineHeight = 23.sp
                     ),
                     placeholder = {
                         Text(
@@ -462,9 +462,9 @@ fun AlphabetScreen(
                         input.ifBlank { "Aqui aparece o texto puro A–Z…" },
                         color = if (input.isBlank()) scheme.onSurface.copy(alpha = 0.5f)
                         else scheme.onSurface,
-                        fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 15.sp else 19.sp,
-                        lineHeight = if (isDark) 22.sp else 24.sp
+                        fontFamily = CrtMono,
+                        fontSize = 15.sp,
+                        lineHeight = 22.sp
                     )
                 }
 
@@ -505,7 +505,7 @@ fun AlphabetScreen(
                     ) {
                         Text(
                             "REGISTRAR NO HISTORICO  ▼",
-                            fontFamily = Stanford, fontSize = 20.sp,
+                            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 21.sp,
                             color = Color.White, letterSpacing = 1.sp
                         )
                     }
@@ -564,9 +564,9 @@ fun AlphabetScreen(
             title = {
                 Text(
                     "LIMPAR TUDO?",
-                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontFamily = Amatic,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 23.sp else 19.sp,
+                    fontSize = 23.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -583,14 +583,14 @@ fun AlphabetScreen(
                     onClick = { persist(emptyList()); showClearAllDialog = false },
                     colors = ButtonDefaults.buttonColors(containerColor = scheme.error, contentColor = Color.White),
                     shape = if (isDark) BillCardShape else StampShape
-                ) { Text("LIMPAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 19.sp else 15.sp) }
+                ) { Text("LIMPAR", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 19.sp) }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = { showClearAllDialog = false },
                     shape = if (isDark) BillCardShape else StampShape
                 ) {
-                    Text("CANCELAR", fontFamily = if (isDark) Amatic else Stanford, fontSize = if (isDark) 19.sp else 15.sp)
+                    Text("CANCELAR", fontFamily = Amatic, fontSize = 19.sp)
                 }
             }
         )
@@ -602,9 +602,9 @@ fun AlphabetScreen(
             title = {
                 Text(
                     "▤ HISTORICO ALFABETOS // ${history.size}",
-                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontFamily = Amatic,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 23.sp else 18.sp
+                    fontSize = 23.sp
                 )
             },
             text = {
@@ -630,7 +630,7 @@ fun AlphabetScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showFullHistory = false }) {
-                    Text("FECHAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 20.sp else 16.sp)
+                    Text("FECHAR", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 }
             }
         )
@@ -639,7 +639,7 @@ fun AlphabetScreen(
     if (showAbout) {
         AlertDialog(
             onDismissRequest = { showAbout = false },
-            title = { Text("Sobre alfabetos", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
+            title = { Text("Sobre alfabetos", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 25.sp) },
             text = {
                 Text(
                     "Os 4 alfabetos visuais de Gravity Falls.\n\n• Autor, Bill, Runas Estranhas e Theraprism.\n• Nao sao cifras: o texto continua normal por dentro.\n• A fonte so muda a aparencia na tela.\n• Historico separado do das cifras.",
@@ -653,7 +653,7 @@ fun AlphabetScreen(
     if (showHelp) {
         AlertDialog(
             onDismissRequest = { showHelp = false },
-            title = { Text("Ajuda", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
+            title = { Text("Ajuda", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 25.sp) },
             text = {
                 Text(
                     "1. Escolha um dos 4 alfabetos.\n2. Digite normal ou use o teclado visual (26 simbolos).\n3. Tocou no simbolo = entra a letra normal.\n4. Veja a previa com a fonte especial.\n5. Confira o texto normal decodificado.\n6. Toque em REGISTRAR para guardar no historico.",
@@ -699,9 +699,9 @@ fun AlphabetToolbar(
             )
             Text(
                 "ALFABETOS DESCONHECIDOS",
-                fontFamily = if (isDark) Amatic else Stanford,
+                fontFamily = Amatic,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 18.sp else 15.sp,
+                fontSize = 18.sp,
                 color = if (isDark) TerminalGreen else LeatherBrown,
                 maxLines = 1, overflow = TextOverflow.Ellipsis
             )
@@ -929,7 +929,7 @@ fun AlphabetModeButtonJournal(text: String, active: Boolean, mod: Modifier, onCl
     ) {
         Text(
             text, color = if (active) Color.White else BrushRed.copy(alpha = 0.8f),
-            fontFamily = Stanford, fontSize = 16.sp
+            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 18.sp
         )
     }
 }
@@ -995,9 +995,9 @@ fun AlphabetCard(
             Text(
                 alphabet.title,
                 color = if (selected && isDark) BillGold else if (selected) BrushRed else scheme.onSurface,
-                fontFamily = if (isDark) Amatic else Stanford,
+                fontFamily = Amatic,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 18.sp else 15.sp,
+                fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 maxLines = 2, overflow = TextOverflow.Ellipsis
             )
@@ -1085,8 +1085,8 @@ fun AlphabetHistorySection(
             Spacer(Modifier.width(6.dp))
             Text(
                 "HISTORICO ALFABETOS",
-                fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 20.sp else 15.sp,
+                fontFamily = Amatic,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
         }

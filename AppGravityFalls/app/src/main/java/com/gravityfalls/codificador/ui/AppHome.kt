@@ -122,7 +122,7 @@ fun HomeTabButtonLight(text: String, active: Boolean, mod: Modifier, onClick: ()
     ) {
         Text(
             text, color = if (active) Color.White else BrushRed.copy(alpha = 0.8f),
-            fontFamily = Stanford, fontSize = 16.sp
+            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 18.sp
         )
     }
 }

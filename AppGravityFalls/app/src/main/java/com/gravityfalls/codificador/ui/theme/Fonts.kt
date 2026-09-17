@@ -8,12 +8,14 @@ import com.gravityfalls.codificador.R
 /**
  * Fontes do universo Gravity Falls (arquivos locais em res/font).
  *
- * - Stanford: traco do Diario 3, usada nos titulos / cards / botoes no modo claro.
- * - Amatic SC: manuscrita condensada, usada no modo Bill e em detalhes pequenos
- *   (contadores, anotacoes de margem, datas) nos dois modos — muito mais legivel
- *   que a Stanford em tamanhos < 14.sp.
- * - CrtMono: monospace do sistema, preservada so para entrada/saida no modo
- *   escuro (legibilidade de terminal CRT).
+ * - Stanford: traco do Diario 3, usada APENAS nos titulos grandes
+ *   ("CIFRADOR" / "ALFABETOS") no modo claro — fora do titulo ela
+ *   prejudica a legibilidade e foi trocada pela fonte do modo escuro.
+ * - Amatic SC: manuscrita condensada, usada em toda a interface
+ *   (cards, botoes, etiquetas, contadores, margem) nos dois modos —
+ *   muito mais legivel que a Stanford em tamanhos pequenos.
+ * - CrtMono: monospace do sistema, usada na entrada/saida de texto
+ *   nos dois modos (legibilidade de terminal CRT).
  *
  * Se um .ttf falhar, o Compose faz fallback para a fonte padrao — o app nunca quebra.
  */
@@ -50,7 +52,7 @@ val Theraprism = FontFamily(
     Font(R.font.theraprism, FontWeight.Normal)
 )
 
-/** Titulo grande estilo diario (modo claro). */
+/** Titulo grande estilo diario (modo claro) — unico uso da Stanford. */
 val JournalTitle: FontFamily get() = Stanford
 
 /** Titulo estilo grimorio (modo escuro) — Amatic Bold e mais legivel que Stanford no preto. */

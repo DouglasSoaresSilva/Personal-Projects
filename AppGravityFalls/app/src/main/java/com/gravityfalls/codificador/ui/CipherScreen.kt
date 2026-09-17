@@ -234,9 +234,9 @@ fun CipherScreen(
                 ) {
                     Text(
                         "ESCOLHA A CIFRA",
-                        fontFamily = if (isDark) Amatic else Stanford,
+                        fontFamily = Amatic,
                         fontWeight = FontWeight.Bold,
-                        fontSize = if (isDark) 19.sp else 17.sp,
+                        fontSize = 19.sp,
                         letterSpacing = 1.sp,
                         color = scheme.onBackground.copy(alpha = 0.8f),
                         modifier = Modifier.weight(1f)
@@ -318,9 +318,9 @@ fun CipherScreen(
                     ),
                     shape = if (isDark) BillCardShape else JournalFieldShape,
                     textStyle = LocalTextStyle.current.copy(
-                        fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 16.sp else 20.sp,
-                        lineHeight = if (isDark) 23.sp else 25.sp
+                        fontFamily = CrtMono,
+                        fontSize = 16.sp,
+                        lineHeight = 23.sp
                     ),
                     placeholder = {
                         Text(
@@ -370,9 +370,9 @@ fun CipherScreen(
                         output.ifBlank { "Resultado aparecera aqui..." },
                         color = if (output.isBlank()) scheme.onSecondaryContainer.copy(alpha = 0.5f)
                         else scheme.onSecondaryContainer,
-                        fontFamily = if (isDark) CrtMono else Stanford,
-                        fontSize = if (isDark) 16.sp else 20.sp,
-                        lineHeight = if (isDark) 23.sp else 25.sp
+                        fontFamily = CrtMono,
+                        fontSize = 16.sp,
+                        lineHeight = 23.sp
                     )
                 }
                 if (isDark) {
@@ -440,7 +440,7 @@ fun CipherScreen(
                     ) {
                         Text(
                             if (encodeMode) "CODIFICAR  ▼" else "DECODIFICAR  ▼",
-                            fontFamily = Stanford, fontSize = 20.sp,
+                            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 21.sp,
                             color = Color.White, letterSpacing = 1.sp
                         )
                     }
@@ -506,9 +506,9 @@ fun CipherScreen(
             title = {
                 Text(
                     "LIMPAR TUDO?",
-                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontFamily = Amatic,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 23.sp else 19.sp,
+                    fontSize = 23.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -525,14 +525,14 @@ fun CipherScreen(
                     onClick = { persist(emptyList()); showClearAllDialog = false },
                     colors = ButtonDefaults.buttonColors(containerColor = scheme.error, contentColor = Color.White),
                     shape = if (isDark) BillCardShape else StampShape
-                ) { Text("LIMPAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 19.sp else 15.sp) }
+                ) { Text("LIMPAR", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 19.sp) }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = { showClearAllDialog = false },
                     shape = if (isDark) BillCardShape else StampShape
                 ) {
-                    Text("CANCELAR", fontFamily = if (isDark) Amatic else Stanford, fontSize = if (isDark) 19.sp else 15.sp)
+                    Text("CANCELAR", fontFamily = Amatic, fontSize = 19.sp)
                 }
             }
         )
@@ -544,9 +544,9 @@ fun CipherScreen(
             title = {
                 Text(
                     "▤ HISTORICO // ${history.size}",
-                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontFamily = Amatic,
                     fontWeight = FontWeight.Bold,
-                    fontSize = if (isDark) 23.sp else 18.sp
+                    fontSize = 23.sp
                 )
             },
             text = {
@@ -573,7 +573,7 @@ fun CipherScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showFullHistory = false }) {
-                    Text("FECHAR", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 20.sp else 16.sp)
+                    Text("FECHAR", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 }
             }
         )
@@ -582,7 +582,7 @@ fun CipherScreen(
     if (showAbout) {
         AlertDialog(
             onDismissRequest = { showAbout = false },
-            title = { Text("Sobre o app", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
+            title = { Text("Sobre o app", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 25.sp) },
             text = {
                 Text(
                     "Codificador Gravity Falls — as 3 cifras classicas da serie.\n\n• Cesar: deslocamento configuravel (padrao +3/-3)\n• Atbash: A↔Z simetrica\n• A1Z26: A=1…Z=26, / = espaco\n\nVisual: Livro do Bill (escuro) / Diario 3 (claro).",
@@ -596,7 +596,7 @@ fun CipherScreen(
     if (showHelp) {
         AlertDialog(
             onDismissRequest = { showHelp = false },
-            title = { Text("Ajuda", fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 25.sp else 20.sp) },
+            title = { Text("Ajuda", fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 25.sp) },
             text = {
                 Text(
                     "1. Escolha CODIFICAR ou DECODIFICAR.\n2. Escolha a cifra (Cesar, Atbash, A1Z26).\n3. No Cesar, ajuste o deslocamento com - / + (1-25).\n4. Digite e veja o resultado na hora.\n5. Toque no botao principal para gravar no historico.\n6. Toque num item do historico para reutilizar.",
@@ -637,9 +637,9 @@ fun JournalToolbar(
             )
             Text(
                 "CIFRAS DESCONHECIDAS",
-                fontFamily = if (isDark) Amatic else Stanford,
+                fontFamily = Amatic,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 18.sp else 15.sp,
+                fontSize = 18.sp,
                 color = if (isDark) TerminalGreen else LeatherBrown,
                 maxLines = 1, overflow = TextOverflow.Ellipsis
             )
@@ -759,8 +759,8 @@ fun ThemeSelectorStamps(themeMode: ThemeMode, onChange: (ThemeMode) -> Unit, isD
             Spacer(Modifier.width(6.dp))
             Text(
                 "TEMA DO APP",
-                fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 18.sp else 14.sp,
+                fontFamily = Amatic,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
             Spacer(Modifier.weight(1f))
@@ -795,9 +795,9 @@ fun ThemeChip(text: String, mode: ThemeMode, active: Boolean, mod: Modifier, isD
         Text(
             text,
             color = fg,
-            fontFamily = if (isDark) Amatic else Stanford,
+            fontFamily = Amatic,
             fontWeight = FontWeight.Bold,
-            fontSize = if (isDark) 17.sp else 13.sp
+            fontSize = 17.sp
         )
     }
 }
@@ -824,8 +824,8 @@ fun HistorySection(
             Spacer(Modifier.width(6.dp))
             Text(
                 "HISTORICO",
-                fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 20.sp else 15.sp,
+                fontFamily = Amatic,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = scheme.primary
             )
         }
@@ -1047,12 +1047,12 @@ fun ModeButtonJournal(text: String, active: Boolean, mod: Modifier, onClick: () 
             // etiqueta inativa: so texto carimbado
             Text(
                 text, color = BrushRed.copy(alpha = 0.8f),
-                fontFamily = Stanford, fontSize = 16.sp
+                fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 18.sp
             )
         } else {
             Text(
                 text, color = Color.White,
-                fontFamily = Stanford, fontSize = 16.sp
+                fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 18.sp
             )
         }
     }
@@ -1072,7 +1072,7 @@ fun ModeButton(text: String, active: Boolean, mod: Modifier, onClick: () -> Unit
     ) {
         Text(
             text, color = if (active) Color.White else scheme.error,
-            fontFamily = Stanford, fontSize = 15.sp
+            fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 16.sp
         )
     }
 }
@@ -1151,7 +1151,7 @@ fun CipherGridCard(
                 Text(
                     icon,
                     fontSize = 24.sp,
-                    fontFamily = if (isDark) Amatic else Stanford,
+                    fontFamily = Amatic,
                     color = when {
                         selected && isDark -> BillGold
                         selected -> BrushRed
@@ -1163,9 +1163,9 @@ fun CipherGridCard(
             Text(
                 title,
                 color = if (selected && isDark) BillGold else if (selected) BrushRed else scheme.onSurface,
-                fontFamily = if (isDark) Amatic else Stanford,
+                fontFamily = Amatic,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 21.sp else 18.sp,
+                fontSize = 21.sp,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -1206,8 +1206,8 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
         Column(Modifier.weight(1f)) {
             Text(
                 "DESLOCAMENTO DE CESAR",
-                fontFamily = if (isDark) Amatic else Stanford,
-                fontSize = if (isDark) 18.sp else 14.sp,
+                fontFamily = Amatic,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold, color = scheme.primary
             )
             Text(
@@ -1230,7 +1230,7 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("$shift", color = Color.White, fontFamily = if (isDark) Amatic else Stanford, fontWeight = FontWeight.Bold, fontSize = if (isDark) 21.sp else 17.sp)
+            Text("$shift", color = Color.White, fontFamily = Amatic, fontWeight = FontWeight.Bold, fontSize = 21.sp)
         }
         IconButton(
             onClick = { onChange(shift + 1) }, enabled = shift < CAESAR_MAX_SHIFT,
@@ -1243,8 +1243,8 @@ fun CaesarShiftStepper(shift: Int, isDark: Boolean, onChange: (Int) -> Unit) {
 fun SectionLabel(text: String, isDark: Boolean) {
     Text(
         text, color = MaterialTheme.colorScheme.primary,
-        fontFamily = if (isDark) Amatic else Stanford,
-        fontSize = if (isDark) 20.sp else 16.sp,
+        fontFamily = Amatic,
+        fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         letterSpacing = 1.sp,
         modifier = Modifier.padding(bottom = 6.dp, top = 4.dp)
@@ -1272,9 +1272,9 @@ fun QuickButton(
             Spacer(Modifier.height(2.dp))
             Text(
                 text,
-                fontFamily = if (isDark) Amatic else Stanford,
+                fontFamily = Amatic,
                 fontWeight = FontWeight.Bold,
-                fontSize = if (isDark) 16.sp else 12.sp,
+                fontSize = 16.sp,
                 maxLines = 1
             )
         }
